@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Airrive.AI — Your AI Travel Agent</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --ink: #0a0a0f; --paper: #f5f2eb; --sky: #1a3a5c;
+      --electric: #00c8ff; --amber: #ffb347; --green: #00d68f;
+      --muted: #7a7a8a; --card-bg: #ffffff; --border: rgba(10,10,15,0.08);
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--paper); color: var(--ink); overflow-x: hidden; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.2rem 5vw;
+      background: rgba(245,242,235,0.88); backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+    .logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.3rem; letter-spacing: -0.03em; color: var(--ink); text-decoration: none; }
+    .logo span { color: var(--electric); }
+    nav a.cta-nav { font-size: 0.85rem; font-weight: 500; background: var(--ink); color: var(--paper); padding: 0.55rem 1.3rem; border-radius: 100px; text-decoration: none; transition: background 0.2s; }
+    nav a.cta-nav:hover { background: var(--sky); }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr;
+      align-items: center; gap: 4rem; padding: 9rem 5vw 5rem; position: relative; overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background: radial-gradient(ellipse 60% 70% at 85% 40%, rgba(0,200,255,0.08) 0%, transparent 65%),
+                  radial-gradient(ellipse 40% 50% at 10% 80%, rgba(26,58,92,0.07) 0%, transparent 60%);
+    }
+    .hero-left { position: relative; z-index: 1; }
+    .hero-eyebrow {
+      font-size: 0.78rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--electric); background: rgba(0,200,255,0.1); border: 1px solid rgba(0,200,255,0.25);
+      display: inline-block; padding: 0.4rem 1rem; border-radius: 100px; margin-bottom: 1.8rem;
+      animation: fadeUp 0.7s ease both;
+    }
+    .hero h1 { font-family: 'Syne', sans-serif; font-size: clamp(2.6rem, 5vw, 5rem); font-weight: 800; line-height: 1.02; letter-spacing: -0.04em; animation: fadeUp 0.7s 0.1s ease both; }
+    .hero h1 .accent { color: var(--sky); position: relative; }
+    .hero h1 .accent::after { content: ''; position: absolute; bottom: 3px; left: 0; right: 0; height: 3px; background: var(--electric); border-radius: 2px; }
+    .hero-sub { margin-top: 1.6rem; font-size: clamp(0.95rem, 1.3vw, 1.15rem); font-weight: 300; line-height: 1.75; color: #3a3a4a; max-width: 46ch; animation: fadeUp 0.7s 0.2s ease both; }
+    .hero-actions { margin-top: 2.4rem; display: flex; gap: 1rem; flex-wrap: wrap; animation: fadeUp 0.7s 0.3s ease both; }
+    .btn-primary { font-family: 'DM Sans', sans-serif; font-size: 1rem; font-weight: 500; background: var(--ink); color: var(--paper); border: none; border-radius: 100px; padding: 0.9rem 2.2rem; cursor: pointer; transition: transform 0.15s, box-shadow 0.15s; text-decoration: none; display: inline-block; }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(10,10,15,0.18); }
+    .btn-ghost { font-family: 'DM Sans', sans-serif; font-size: 1rem; font-weight: 400; background: transparent; color: var(--ink); border: 1.5px solid rgba(10,10,15,0.2); border-radius: 100px; padding: 0.9rem 2.2rem; cursor: pointer; transition: border-color 0.15s, background 0.15s; text-decoration: none; display: inline-block; }
+    .btn-ghost:hover { border-color: var(--ink); background: rgba(10,10,15,0.04); }
+
+    /* PHONE MOCKUP */
+    .hero-right { position: relative; z-index: 1; display: flex; justify-content: center; align-items: center; animation: fadeUp 0.8s 0.35s ease both; }
+    .phone-wrap { position: relative; width: 280px; }
+    .phone-wrap::before { content: ''; position: absolute; inset: -40px; background: radial-gradient(ellipse 80% 80% at 50% 50%, rgba(0,200,255,0.14), transparent 70%); z-index: 0; animation: glow 3s ease-in-out infinite; }
+    @keyframes glow { 0%,100%{opacity:.5;transform:scale(1)} 50%{opacity:1;transform:scale(1.06)} }
+    .phone { position: relative; z-index: 1; width: 280px; background: #0f0f14; border-radius: 40px; padding: 16px; box-shadow: 0 0 0 1px rgba(255,255,255,0.07), 0 40px 80px rgba(0,0,0,0.4), 0 0 60px rgba(0,200,255,0.07); }
+    .phone-screen { background: #161620; border-radius: 28px; overflow: hidden; padding: 20px 16px; }
+    .phone-status { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+    .phone-time { font-size: 0.75rem; font-weight: 600; color: white; letter-spacing: 0.04em; }
+    .phone-icons span { font-size: 0.62rem; color: rgba(255,255,255,0.5); }
+    .phone-header { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+    .phone-avatar { width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, var(--electric), var(--sky)); display: flex; align-items: center; justify-content: center; font-size: 0.9rem; }
+    .phone-header-title { font-size: 0.78rem; font-weight: 600; color: white; }
+    .phone-header-sub { font-size: 0.62rem; color: rgba(255,255,255,0.4); }
+    .notif-card { background: linear-gradient(135deg, rgba(0,200,255,0.12), rgba(0,200,255,0.04)); border: 1px solid rgba(0,200,255,0.2); border-radius: 14px; padding: 12px; margin-bottom: 12px; animation: slideIn 0.5s 0.8s ease both; }
+    .notif-label { font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--electric); font-weight: 600; margin-bottom: 5px; }
+    .notif-text { font-size: 0.7rem; color: rgba(255,255,255,0.8); line-height: 1.5; }
+    .notif-text strong { color: white; font-weight: 600; }
+    .ride-options { display: flex; flex-direction: column; gap: 7px; margin-bottom: 11px; }
+    .ride-option { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); border-radius: 11px; padding: 9px 11px; display: flex; align-items: center; gap: 9px; }
+    .ride-option.best { background: rgba(0,214,143,0.08); border-color: rgba(0,214,143,0.28); animation: slideIn 0.4s 1s ease both; }
+    .ride-option:nth-child(2) { animation: slideIn 0.4s 1.1s ease both; }
+    .ride-option:nth-child(3) { animation: slideIn 0.4s 1.2s ease both; }
+    .ride-logo { width: 26px; height: 26px; border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 700; flex-shrink: 0; }
+    .logo-uber { background: #000; color: white; }
+    .logo-lyft { background: #FF00BF; color: white; }
+    .logo-ola  { background: #fff; color: #000; }
+    .ride-info { flex: 1; }
+    .ride-name { font-size: 0.68rem; font-weight: 600; color: white; }
+    .ride-eta  { font-size: 0.58rem; color: rgba(255,255,255,0.38); }
+    .ride-amount { font-size: 0.75rem; font-weight: 700; color: white; text-align: right; }
+    .ride-surge  { font-size: 0.55rem; color: rgba(255,100,100,0.8); text-align: right; }
+    .best-badge { font-size: 0.52rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--green); background: rgba(0,214,143,0.15); border-radius: 100px; padding: 1px 5px; margin-left: 4px; }
+    .phone-book-btn { width: 100%; padding: 11px; background: linear-gradient(135deg, var(--electric), #0099cc); border: none; border-radius: 11px; font-size: 0.72rem; font-weight: 700; color: var(--ink); cursor: pointer; letter-spacing: 0.04em; animation: slideIn 0.4s 1.3s ease both; position: relative; overflow: hidden; }
+    .phone-book-btn::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.22), transparent); transform: translateX(-100%); animation: shimmer 2.5s 2s ease infinite; }
+    @keyframes shimmer { 0%{transform:translateX(-100%)} 100%{transform:translateX(100%)} }
+
+    /* Floating badges */
+    .float-badge { position: absolute; background: white; border-radius: 13px; padding: 8px 13px; box-shadow: 0 8px 24px rgba(0,0,0,0.11); display: flex; align-items: center; gap: 8px; z-index: 2; }
+    .float-badge .badge-icon { font-size: 1rem; }
+    .float-badge .badge-text { font-size: 0.7rem; font-weight: 600; color: var(--ink); white-space: nowrap; }
+    .float-badge .badge-sub  { font-size: 0.58rem; color: var(--muted); }
+    .badge-flight { top: -12px; right: -36px; animation: float 4s ease-in-out infinite; }
+    .badge-save   { bottom: 50px; left: -44px; animation: float 4s 1.5s ease-in-out infinite; }
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+    @keyframes slideIn { from{opacity:0;transform:translateX(-10px)} to{opacity:1;transform:translateX(0)} }
+
+    /* PROOF BAR */
+    .proof-bar { padding: 1.6rem 5vw; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 2rem; flex-wrap: wrap; }
+    .proof-bar span { font-size: 0.82rem; color: var(--muted); }
+    .proof-bar strong { color: var(--ink); font-weight: 600; }
+    .proof-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--border); flex-shrink: 0; }
+
+    /* SECTIONS */
+    section { padding: 7rem 5vw; }
+    .section-label { font-size: 0.75rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 1rem; }
+    .section-title { font-family: 'Syne', sans-serif; font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; max-width: 22ch; margin-bottom: 1rem; }
+    .section-sub { font-size: 1rem; color: var(--muted); max-width: 50ch; line-height: 1.7; margin-bottom: 4rem; }
+
+    /* CAB SPOTLIGHT */
+    .cab-spotlight { background: var(--ink); color: white; padding: 7rem 5vw; overflow: hidden; position: relative; }
+    .cab-spotlight::before { content: ''; position: absolute; top: -200px; right: -200px; width: 600px; height: 600px; border-radius: 50%; background: radial-gradient(circle, rgba(0,200,255,0.06) 0%, transparent 70%); }
+    .cab-spotlight .section-label { color: rgba(255,255,255,0.32); }
+    .cab-spotlight .section-title { color: white; max-width: 18ch; }
+    .cab-spotlight .section-sub   { color: rgba(255,255,255,0.48); margin-bottom: 3rem; }
+    .cab-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+
+    /* Journey map */
+    .journey-map { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 24px; padding: 2rem; position: relative; overflow: hidden; }
+    .journey-map::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(0,200,255,0.04), transparent); border-radius: 24px; }
+    .journey-map-title { font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.28); margin-bottom: 1.6rem; font-weight: 500; }
+    .journey-step { display: flex; align-items: flex-start; gap: 14px; }
+    .journey-line-wrap { display: flex; flex-direction: column; align-items: center; width: 30px; flex-shrink: 0; }
+    .journey-dot { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; flex-shrink: 0; position: relative; z-index: 1; }
+    .dot-home   { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.13); }
+    .dot-ai     { background: rgba(0,200,255,0.13); border: 1px solid rgba(0,200,255,0.28); }
+    .dot-cab    { background: rgba(0,214,143,0.13); border: 1px solid rgba(0,214,143,0.28); }
+    .dot-arrive { background: rgba(255,179,71,0.13); border: 1px solid rgba(255,179,71,0.28); }
+    .journey-connector { width: 1px; flex: 1; min-height: 20px; background: linear-gradient(to bottom, rgba(255,255,255,0.1), rgba(255,255,255,0.03)); margin: 3px 0; }
+    .journey-content { padding-top: 4px; padding-bottom: 22px; flex: 1; }
+    .journey-label  { font-size: 0.82rem; font-weight: 600; color: white; margin-bottom: 3px; }
+    .journey-detail { font-size: 0.7rem; color: rgba(255,255,255,0.38); line-height: 1.5; }
+    .ai-action-card { background: rgba(0,200,255,0.07); border: 1px solid rgba(0,200,255,0.14); border-radius: 10px; padding: 9px 11px; margin-top: 8px; }
+    .ai-action-label { font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--electric); font-weight: 600; margin-bottom: 3px; }
+    .ai-action-text  { font-size: 0.7rem; color: rgba(255,255,255,0.65); line-height: 1.4; }
+    .compare-row { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
+    .compare-chip { font-size: 0.62rem; font-weight: 600; padding: 3px 9px; border-radius: 100px; border: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.5); }
+    .compare-chip.winner { background: rgba(0,214,143,0.1); border-color: rgba(0,214,143,0.28); color: var(--green); }
+    .deeplink-row { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
+    .deeplink-btn { font-size: 0.66rem; font-weight: 700; padding: 5px 13px; border-radius: 100px; background: var(--electric); color: var(--ink); border: none; cursor: pointer; }
+    .deeplink-hint { font-size: 0.6rem; color: rgba(255,255,255,0.28); }
+
+    /* Cab feature list */
+    .cab-features { display: flex; flex-direction: column; gap: 2rem; }
+    .cab-feature { display: flex; gap: 1.2rem; align-items: flex-start; }
+    .cf-icon { width: 44px; height: 44px; border-radius: 14px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
+    .cf-icon-blue   { background: rgba(0,200,255,0.1); }
+    .cf-icon-green  { background: rgba(0,214,143,0.1); }
+    .cf-icon-amber  { background: rgba(255,179,71,0.1); }
+    .cf-icon-purple { background: rgba(180,100,255,0.1); }
+    .cf-title { font-family: 'Syne', sans-serif; font-size: 0.95rem; font-weight: 700; color: white; margin-bottom: 0.3rem; }
+    .cf-desc  { font-size: 0.85rem; color: rgba(255,255,255,0.42); line-height: 1.6; }
+
+    /* USE CASES */
+    .use-cases { background: var(--paper); }
+    .uc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 1.5px; background: var(--border); border: 1.5px solid var(--border); border-radius: 20px; overflow: hidden; }
+    .uc-card { background: var(--card-bg); padding: 2.2rem 2rem; display: flex; flex-direction: column; gap: 1rem; transition: background 0.2s; position: relative; overflow: hidden; }
+    .uc-card:hover { background: #fafafa; }
+    .uc-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--electric), transparent); opacity: 0; transition: opacity 0.2s; }
+    .uc-card:hover::before { opacity: 1; }
+    .uc-icon { width: 44px; height: 44px; border-radius: 12px; background: var(--paper); display: flex; align-items: center; justify-content: center; font-size: 1.4rem; }
+    .uc-title { font-family: 'Syne', sans-serif; font-size: 1.05rem; font-weight: 700; letter-spacing: -0.02em; line-height: 1.3; }
+    .uc-desc  { font-size: 0.9rem; color: #505060; line-height: 1.65; flex: 1; }
+    .uc-tag { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; display: inline-flex; align-items: center; gap: 0.3rem; padding: 0.3rem 0.75rem; border-radius: 100px; width: fit-content; }
+    .tag-live { background: rgba(0,200,100,0.1); color: #008844; }
+    .tag-soon { background: rgba(255,179,71,0.15); color: #b87800; }
+    .tag-beta { background: rgba(0,200,255,0.1); color: #0077aa; }
+
+    /* HOW IT WORKS */
+    .how { background: var(--sky); color: white; }
+    .how .section-title { color: white; }
+    .how .section-sub   { color: rgba(255,255,255,0.55); }
+    .how .section-label { color: rgba(255,255,255,0.38); }
+    .steps { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 2rem; }
+    .step  { display: flex; flex-direction: column; gap: 1rem; }
+    .step-num   { font-family: 'Syne', sans-serif; font-size: 3rem; font-weight: 800; color: rgba(255,255,255,0.1); line-height: 1; }
+    .step-title { font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 700; color: white; }
+    .step-desc  { font-size: 0.88rem; color: rgba(255,255,255,0.48); line-height: 1.65; }
+
+    /* BETA */
+    .signup-section { background: var(--ink); color: white; text-align: center; padding: 8rem 5vw; }
+    .signup-section .section-label { color: rgba(255,255,255,0.28); }
+    .signup-section .section-title { color: white; margin: 0 auto 1rem; font-size: clamp(2.2rem, 5vw, 4rem); }
+    .signup-section .section-sub   { color: rgba(255,255,255,0.42); margin: 0 auto 3rem; }
+    .signup-form { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; max-width: 520px; margin: 0 auto; }
+    .signup-form input { flex: 1; min-width: 220px; font-family: 'DM Sans', sans-serif; font-size: 0.95rem; background: rgba(255,255,255,0.07); border: 1.5px solid rgba(255,255,255,0.12); color: white; border-radius: 100px; padding: 0.9rem 1.5rem; outline: none; transition: border-color 0.2s; }
+    .signup-form input::placeholder { color: rgba(255,255,255,0.28); }
+    .signup-form input:focus { border-color: var(--electric); }
+    .signup-form button { font-family: 'DM Sans', sans-serif; font-size: 0.95rem; font-weight: 500; background: var(--electric); color: var(--ink); border: none; border-radius: 100px; padding: 0.9rem 2rem; cursor: pointer; transition: transform 0.15s, box-shadow 0.15s; white-space: nowrap; }
+    .signup-form button:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,200,255,0.35); }
+    .signup-note { margin-top: 1.2rem; font-size: 0.8rem; color: rgba(255,255,255,0.2); }
+    .success-msg { display: none; color: var(--electric); font-size: 1rem; font-weight: 500; margin-top: 1.5rem; }
+
+    /* FOOTER */
+    footer { padding: 2.5rem 5vw; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+    footer p { font-size: 0.8rem; color: var(--muted); }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+    .reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; padding-top: 8rem; }
+      .hero-right { margin-top: 3rem; }
+      .cab-layout { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 600px) {
+      .proof-dot { display: none; }
+      .hero-actions { flex-direction: column; }
+      .btn-primary, .btn-ghost { text-align: center; }
+      .badge-flight, .badge-save { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="logo">airrive<span>.AI</span></a>
+  <a href="#beta" class="cta-nav">Join Beta →</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-left">
+    <div class="hero-eyebrow">✦ AI-Powered Travel Agent</div>
+    <h1>Your ride.<br>Timed to your <span class="accent">flight.</span></h1>
+    <p class="hero-sub">Airrive.AI watches your flight, compares Uber · Lyft · Ola in real-time, and sends a one-tap booking link at exactly the right moment. No app-switching. No guessing.</p>
+    <div class="hero-actions">
+      <a href="#beta" class="btn-primary">Join the Early Beta</a>
+      <a href="#usecases" class="btn-ghost">All Features</a>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="phone-wrap">
+      <div class="float-badge badge-flight">
+        <div class="badge-icon">✈️</div>
+        <div><div class="badge-text">Flight on time</div><div class="badge-sub">DL 447 · 2h 14m</div></div>
+      </div>
+      <div class="float-badge badge-save">
+        <div class="badge-icon">💰</div>
+        <div><div class="badge-text">Saved $8.40</div><div class="badge-sub">vs manual booking</div></div>
+      </div>
+      <div class="phone">
+        <div class="phone-screen">
+          <div class="phone-status">
+            <div class="phone-time">9:41</div>
+            <div class="phone-icons"><span>●●● WiFi 🔋</span></div>
+          </div>
+          <div class="phone-header">
+            <div class="phone-avatar">✈</div>
+            <div><div class="phone-header-title">Airrive Agent</div><div class="phone-header-sub">Your cab is ready to book</div></div>
+          </div>
+          <div class="notif-card">
+            <div class="notif-label">⚡ Agent Recommendation</div>
+            <div class="notif-text">Flight lands <strong>SFO 4:15 PM</strong>. Best ride found — confirmed driver, no surge. Leave by <strong>1:45 PM</strong>.</div>
+          </div>
+          <div class="ride-options">
+            <div class="ride-option best">
+              <div class="ride-logo logo-lyft">L</div>
+              <div class="ride-info"><div class="ride-name">Lyft <span class="best-badge">Best Deal</span></div><div class="ride-eta">Driver confirmed · 3 min</div></div>
+              <div><div class="ride-amount">$24.50</div></div>
+            </div>
+            <div class="ride-option">
+              <div class="ride-logo logo-uber">U</div>
+              <div class="ride-info"><div class="ride-name">Uber</div><div class="ride-eta">No driver · 6 min</div></div>
+              <div><div class="ride-amount">$28.90</div><div class="ride-surge">1.3× surge</div></div>
+            </div>
+            <div class="ride-option">
+              <div class="ride-logo logo-ola">O</div>
+              <div class="ride-info"><div class="ride-name">Ola</div><div class="ride-eta">Confirmed · 5 min</div></div>
+              <div><div class="ride-amount">$26.20</div></div>
+            </div>
+          </div>
+          <button class="phone-book-btn">TAP TO BOOK LYFT → ONE TAP</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROOF BAR -->
+<div class="proof-bar reveal">
+  <span>✦ <strong>Door-to-gate</strong> automation</span>
+  <div class="proof-dot"></div>
+  <span>✦ Compares <strong>Uber · Lyft · Ola</strong> live</span>
+  <div class="proof-dot"></div>
+  <span>✦ <strong>Real-time</strong> flight intelligence</span>
+  <div class="proof-dot"></div>
+  <span>✦ Built for <strong>frequent travelers</strong></span>
+</div>
+
+<!-- CAB BOOKING SPOTLIGHT -->
+<section class="cab-spotlight">
+  <div class="cab-layout">
+    <div class="reveal">
+      <div class="journey-map">
+        <div class="journey-map-title">How Airrive Books Your Ride</div>
+
+        <div class="journey-step">
+          <div class="journey-line-wrap">
+            <div class="journey-dot dot-home">🏠</div>
+            <div class="journey-connector"></div>
+          </div>
+          <div class="journey-content">
+            <div class="journey-label">Flight Detected</div>
+            <div class="journey-detail">Airrive reads your itinerary and locks in your flight details automatically.</div>
+          </div>
+        </div>
+
+        <div class="journey-step">
+          <div class="journey-line-wrap">
+            <div class="journey-dot dot-ai">🤖</div>
+            <div class="journey-connector"></div>
+          </div>
+          <div class="journey-content">
+            <div class="journey-label">Optimal Pickup Calculated</div>
+            <div class="journey-detail">Traffic, check-in time, and terminal distance all factored in.</div>
+            <div class="ai-action-card">
+              <div class="ai-action-label">⚡ AI Decision</div>
+              <div class="ai-action-text">Leave by 1:45 PM for DL 447 — 35 min buffer at SFO T2</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="journey-step">
+          <div class="journey-line-wrap">
+            <div class="journey-dot dot-cab">🚖</div>
+            <div class="journey-connector"></div>
+          </div>
+          <div class="journey-content">
+            <div class="journey-label">Live Price Comparison</div>
+            <div class="journey-detail">Uber, Lyft, and Ola checked simultaneously — surge, availability, ETA.</div>
+            <div class="compare-row">
+              <div class="compare-chip winner">Lyft $24.50 ✓</div>
+              <div class="compare-chip">Uber $28.90</div>
+              <div class="compare-chip">Ola $26.20</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="journey-step">
+          <div class="journey-line-wrap">
+            <div class="journey-dot dot-arrive">✈️</div>
+          </div>
+          <div class="journey-content">
+            <div class="journey-label">One-Tap Deep Link Sent</div>
+            <div class="journey-detail">Tap once — Lyft opens with the trip pre-filled and ready to confirm.</div>
+            <div class="deeplink-row">
+              <button class="deeplink-btn">Book Lyft →</button>
+              <span class="deeplink-hint">Opens in Lyft app</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cab-features reveal">
+      <div>
+        <p class="section-label">Featured Capability</p>
+        <h2 class="section-title">Smart Cab Booking that thinks ahead</h2>
+        <p class="section-sub">No more opening three apps, calculating departure times, and hoping for no surge. Airrive does it all — before you ask.</p>
+      </div>
+      <div class="cab-feature">
+        <div class="cf-icon cf-icon-blue">⏱</div>
+        <div><div class="cf-title">Flight-aware timing</div><div class="cf-desc">Pickup time calculated from your actual flight — terminal, traffic, and buffer included.</div></div>
+      </div>
+      <div class="cab-feature">
+        <div class="cf-icon cf-icon-green">💸</div>
+        <div><div class="cf-title">Real-time price comparison</div><div class="cf-desc">Uber, Lyft, and Ola checked simultaneously. Surge, driver confirmation, and ETA all factored in.</div></div>
+      </div>
+      <div class="cab-feature">
+        <div class="cf-icon cf-icon-amber">👆</div>
+        <div><div class="cf-title">One-tap deep link</div><div class="cf-desc">You never leave your preferred app. Airrive pre-loads the trip — one tap and you're booked.</div></div>
+      </div>
+      <div class="cab-feature">
+        <div class="cf-icon cf-icon-purple">🔔</div>
+        <div><div class="cf-title">Proactive notifications</div><div class="cf-desc">Airrive nudges you at the right moment — not too early, not too late. Just confirm.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OTHER USE CASES -->
+<section class="use-cases" id="usecases">
+  <p class="section-label reveal">Everything Airrive Does</p>
+  <h2 class="section-title reveal">Six ways we eliminate travel friction</h2>
+  <p class="section-sub reveal">From the moment you book to the second you arrive, Airrive handles every detail automatically.</p>
+  <div class="uc-grid">
+    <div class="uc-card reveal"><div class="uc-icon">🚖</div><div class="uc-title">Smart Cab Booking</div><p class="uc-desc">Compares Uber, Lyft, and Ola in real-time — surge, driver confirmation, ETA — and sends a one-tap link timed to your flight.</p><span class="uc-tag tag-beta">⬡ In Development</span></div>
+    <div class="uc-card reveal"><div class="uc-icon">📊</div><div class="uc-title">Flight Route Intelligence</div><p class="uc-desc">Weekly summaries of your routes — which flights run on time, which are delay-prone, and which times to avoid.</p><span class="uc-tag tag-live">✓ Coming First</span></div>
+    <div class="uc-card reveal"><div class="uc-icon">👨‍👩‍👧</div><div class="uc-title">Family Flight Tracker</div><p class="uc-desc">Passive monitoring for family members — board, land, connection cleared, estimated arrival. No more anxious texts.</p><span class="uc-tag tag-live">✓ Coming First</span></div>
+    <div class="uc-card reveal"><div class="uc-icon">⚡</div><div class="uc-title">Dynamic Rebooking</div><p class="uc-desc">If a delay threatens your connection, Airrive surfaces alternatives and starts rebooking before the airline notifies you.</p><span class="uc-tag tag-soon">◎ Coming Soon</span></div>
+    <div class="uc-card reveal"><div class="uc-icon">🧳</div><div class="uc-title">Group Arrival Coordination</div><p class="uc-desc">Multiple people flying in for a meeting? Airrive consolidates arrivals and suggests a shared transfer.</p><span class="uc-tag tag-soon">◎ Coming Soon</span></div>
+    <div class="uc-card reveal"><div class="uc-icon">🧾</div><div class="uc-title">Expense Auto-Log</div><p class="uc-desc">Captures cab receipts, flight details, and timestamps and formats them into a ready-to-submit expense report.</p><span class="uc-tag tag-soon">◎ Coming Soon</span></div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how">
+  <p class="section-label reveal">How It Works</p>
+  <h2 class="section-title reveal">Set it once. Let it run.</h2>
+  <p class="section-sub reveal">Airrive works silently in the background — no manual inputs, no app-switching, no surprises.</p>
+  <div class="steps">
+    <div class="step reveal"><div class="step-num">01</div><div class="step-title">Connect Your Travel</div><p class="step-desc">Link your email or calendar. Airrive detects upcoming flights and itineraries automatically.</p></div>
+    <div class="step reveal"><div class="step-num">02</div><div class="step-title">Agent Takes Over</div><p class="step-desc">Your AI agent monitors flights in real-time, tracks delays, and prepares actions before you need them.</p></div>
+    <div class="step reveal"><div class="step-num">03</div><div class="step-title">You Decide in One Tap</div><p class="step-desc">Get a notification with the recommended action and confirm in a single tap.</p></div>
+    <div class="step reveal"><div class="step-num">04</div><div class="step-title">Land Stress-Free</div><p class="step-desc">Every logistical detail handled. You focus on the trip. Airrive handles the rest.</p></div>
+  </div>
+</section>
+
+<!-- BETA SIGNUP -->
+<section class="signup-section" id="beta">
+  <p class="section-label">Early Access</p>
+  <h2 class="section-title">Be first to fly smarter.</h2>
+  <p class="section-sub">We're onboarding a small group of early beta users. Join the waitlist and help shape the future of AI-powered travel.</p>
+  <form class="signup-form" onsubmit="handleSignup(event)">
+    <input type="email" id="email-input" placeholder="your@email.com" required />
+    <button type="submit">Get Early Access →</button>
+  </form>
+  <p class="signup-note">No spam. No credit card. Just early access.</p>
+  <p class="success-msg" id="success-msg">🎉 You're on the list! We'll be in touch soon.</p>
+</section>
+
+<footer>
+  <a href="#" class="logo">airrive<span>.AI</span></a>
+  <p>© 2025 Airrive.AI · Built for travelers who'd rather not think about logistics.</p>
+</footer>
+
+<script>
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08 });
+  reveals.forEach(el => observer.observe(el));
+
+  function handleSignup(e) {
+    e.preventDefault();
+    document.querySelector('.signup-form').style.display = 'none';
+    document.querySelector('.signup-note').style.display = 'none';
+    document.getElementById('success-msg').style.display = 'block';
+  }
+</script>
+</body>
+</html>
