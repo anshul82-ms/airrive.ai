@@ -11,121 +11,46 @@
       --ink: #0a0a0f; --paper: #f5f2eb; --sky: #1a3a5c;
       --electric: #00c8ff; --green: #00d68f; --amber: #ffb347;
       --muted: #7a7a8a; --card-bg: #ffffff; --border: rgba(10,10,15,0.08);
+      --wa: #25D366; --wa-light: #E7F9E9; --wa-border: #5DCAA5; --wa-dark: #0F6E56;
     }
     html { scroll-behavior: smooth; }
     body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background: var(--paper); color: var(--ink); overflow-x: hidden; }
-
-    /* NAV */
-    nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 1.2rem 5vw;
-      background: rgba(245,242,235,0.92); backdrop-filter: blur(14px);
-      border-bottom: 1px solid var(--border);
-    }
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 1.2rem 5vw; background: rgba(245,242,235,0.92); backdrop-filter: blur(14px); border-bottom: 1px solid var(--border); }
     .logo { font-family: 'Inter', sans-serif; font-weight: 800; font-size: 1.25rem; letter-spacing: -0.03em; color: var(--ink); text-decoration: none; }
     .logo span { color: var(--electric); }
     .cta-nav { font-family: 'Inter', sans-serif; font-size: 0.85rem; font-weight: 600; background: var(--ink); color: var(--paper); padding: 0.55rem 1.3rem; border-radius: 100px; text-decoration: none; cursor: pointer; transition: background 0.2s; border: none; }
     .cta-nav:hover { background: var(--sky); }
-
-    /* HERO */
-    .hero {
-      min-height: 100vh; display: flex; flex-direction: column;
-      align-items: center; justify-content: center; text-align: center;
-      padding: 9rem 5vw 6rem; position: relative; overflow: hidden;
-    }
-    .hero-bg {
-      position: absolute; inset: 0; z-index: 0;
-      background:
-        radial-gradient(ellipse 70% 60% at 60% 30%, rgba(0,200,255,0.07) 0%, transparent 65%),
-        radial-gradient(ellipse 50% 50% at 30% 80%, rgba(26,58,92,0.06) 0%, transparent 60%);
-    }
-    .hero-eyebrow {
-      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
-      color: var(--electric); background: rgba(0,200,255,0.1); border: 1px solid rgba(0,200,255,0.2);
-      display: inline-block; padding: 0.35rem 1rem; border-radius: 100px;
-      margin-bottom: 1.6rem; position: relative; z-index: 1;
-      animation: fadeUp 0.6s ease both;
-    }
-    .hero h1 {
-      font-family: 'Inter', sans-serif;
-      font-size: clamp(2.6rem, 6vw, 5.2rem);
-      font-weight: 800; line-height: 1.06; letter-spacing: -0.04em;
-      max-width: 16ch; margin: 0 auto;
-      position: relative; z-index: 1;
-      animation: fadeUp 0.6s 0.1s ease both;
-    }
+    .hero { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 9rem 5vw 6rem; position: relative; overflow: hidden; }
+    .hero-bg { position: absolute; inset: 0; z-index: 0; background: radial-gradient(ellipse 70% 60% at 60% 30%, rgba(0,200,255,0.07) 0%, transparent 65%), radial-gradient(ellipse 50% 50% at 30% 80%, rgba(26,58,92,0.06) 0%, transparent 60%); }
+    .hero-eyebrow { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--electric); background: rgba(0,200,255,0.1); border: 1px solid rgba(0,200,255,0.2); display: inline-block; padding: 0.35rem 1rem; border-radius: 100px; margin-bottom: 1rem; position: relative; z-index: 1; animation: fadeUp 0.6s ease both; }
+    .wa-badge { display: inline-flex; align-items: center; gap: 7px; background: var(--wa-light); border: 1px solid var(--wa-border); border-radius: 100px; padding: 0.35rem 1rem; margin-bottom: 1.6rem; position: relative; z-index: 1; animation: fadeUp 0.6s 0.05s ease both; }
+    .wa-badge svg { flex-shrink: 0; }
+    .wa-badge span { font-size: 0.78rem; font-weight: 600; color: var(--wa-dark); }
+    .hero h1 { font-family: 'Inter', sans-serif; font-size: clamp(2.6rem, 6vw, 5.2rem); font-weight: 800; line-height: 1.06; letter-spacing: -0.04em; max-width: 16ch; margin: 0 auto; position: relative; z-index: 1; animation: fadeUp 0.6s 0.1s ease both; }
     .hero h1 em { font-style: normal; color: var(--sky); position: relative; }
     .hero h1 em::after { content: ''; position: absolute; bottom: 2px; left: 0; right: 0; height: 3px; background: var(--electric); border-radius: 2px; }
-    .hero-sub {
-      margin-top: 1.4rem; font-size: clamp(1rem, 1.5vw, 1.15rem);
-      font-weight: 400; line-height: 1.7; color: #3a3a4a;
-      max-width: 50ch; margin-left: auto; margin-right: auto;
-      position: relative; z-index: 1;
-      animation: fadeUp 0.6s 0.18s ease both;
-    }
-    .hero-form {
-      margin-top: 2.2rem; display: flex; gap: 0.6rem;
-      justify-content: center; flex-wrap: wrap;
-      position: relative; z-index: 1;
-      animation: fadeUp 0.6s 0.26s ease both;
-    }
-    .hero-form input {
-      font-family: 'Inter', sans-serif; font-size: 0.95rem;
-      border: 1.5px solid rgba(10,10,15,0.15); border-radius: 100px;
-      padding: 0.85rem 1.5rem; outline: none; min-width: 240px;
-      background: white; color: var(--ink); transition: border-color 0.2s;
-    }
+    .hero-sub { margin-top: 1.4rem; font-size: clamp(1rem, 1.5vw, 1.15rem); font-weight: 400; line-height: 1.7; color: #3a3a4a; max-width: 50ch; margin-left: auto; margin-right: auto; position: relative; z-index: 1; animation: fadeUp 0.6s 0.18s ease both; }
+    .hero-form { margin-top: 2.2rem; display: flex; gap: 0.6rem; justify-content: center; flex-wrap: wrap; position: relative; z-index: 1; animation: fadeUp 0.6s 0.26s ease both; }
+    .hero-form input { font-family: 'Inter', sans-serif; font-size: 0.95rem; border: 1.5px solid rgba(10,10,15,0.15); border-radius: 100px; padding: 0.85rem 1.5rem; outline: none; min-width: 240px; background: white; color: var(--ink); transition: border-color 0.2s; }
     .hero-form input:focus { border-color: var(--electric); }
     .hero-form input::placeholder { color: #b0b0be; }
-    .hero-form button {
-      font-family: 'Inter', sans-serif; font-size: 0.95rem; font-weight: 600;
-      background: var(--ink); color: var(--paper); border: none; border-radius: 100px;
-      padding: 0.85rem 2rem; cursor: pointer;
-      transition: transform 0.15s, box-shadow 0.15s; white-space: nowrap;
-    }
+    .hero-form button { font-family: 'Inter', sans-serif; font-size: 0.95rem; font-weight: 600; background: var(--ink); color: var(--paper); border: none; border-radius: 100px; padding: 0.85rem 2rem; cursor: pointer; transition: transform 0.15s, box-shadow 0.15s; white-space: nowrap; }
     .hero-form button:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(10,10,15,0.18); }
-    .hero-audience {
-      margin-top: 0.75rem; font-size: 0.82rem; color: var(--muted);
-      position: relative; z-index: 1;
-      animation: fadeUp 0.6s 0.3s ease both;
-    }
-
-    /* HERO TIMELINE */
-    .hero-timeline {
-      margin-top: 3rem; display: flex; align-items: center;
-      justify-content: center; flex-wrap: wrap;
-      position: relative; z-index: 1;
-      animation: fadeUp 0.6s 0.38s ease both;
-    }
-    .timeline-step {
-      display: flex; flex-direction: column; align-items: center; gap: 0.35rem;
-      background: white; border: 1px solid var(--border);
-      border-radius: 16px; padding: 1rem 1.3rem;
-      min-width: 148px; text-align: center;
-      box-shadow: 0 2px 12px rgba(10,10,15,0.05);
-    }
+    .hero-audience { margin-top: 0.75rem; font-size: 0.82rem; color: var(--muted); position: relative; z-index: 1; animation: fadeUp 0.6s 0.3s ease both; }
+    .hero-timeline { margin-top: 3rem; display: flex; align-items: center; justify-content: center; flex-wrap: wrap; position: relative; z-index: 1; animation: fadeUp 0.6s 0.38s ease both; }
+    .timeline-step { display: flex; flex-direction: column; align-items: center; gap: 0.35rem; background: white; border: 1px solid var(--border); border-radius: 16px; padding: 1rem 1.3rem; min-width: 148px; text-align: center; box-shadow: 0 2px 12px rgba(10,10,15,0.05); }
     .t-icon { font-size: 1.35rem; line-height: 1; }
     .t-label { font-size: 0.74rem; font-weight: 600; color: var(--ink); line-height: 1.35; }
     .t-sub { font-size: 0.66rem; color: var(--muted); font-weight: 400; }
     .timeline-arrow { font-size: 1rem; color: rgba(10,10,15,0.18); padding: 0 0.6rem; align-self: center; }
-    .t-outcome { border-color: rgba(0,214,143,0.3); background: rgba(0,214,143,0.04); }
-    .t-outcome .t-label { color: #007a52; }
-
-    /* PROBLEM */
+    .t-outcome { border-color: rgba(37,211,102,0.3); background: rgba(37,211,102,0.04); }
+    .t-outcome .t-label { color: var(--wa-dark); }
     .problem { background: var(--sky); color: white; padding: 7rem 5vw; text-align: center; }
-    .problem-title {
-      font-family: 'Inter', sans-serif;
-      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
-      font-weight: 800; letter-spacing: -0.03em; line-height: 1.15;
-      max-width: 22ch; margin: 0 auto 3rem;
-    }
+    .problem-title { font-family: 'Inter', sans-serif; font-size: clamp(1.8rem, 3.5vw, 2.8rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1.15; max-width: 22ch; margin: 0 auto 3rem; }
     .problem-bullets { display: flex; flex-direction: column; gap: 1rem; max-width: 420px; margin: 0 auto 3rem; text-align: left; }
     .problem-bullet { display: flex; align-items: flex-start; gap: 1rem; font-size: 1.05rem; font-weight: 400; color: rgba(255,255,255,0.82); line-height: 1.5; }
     .problem-bullet-icon { width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center; font-size: 0.85rem; margin-top: 1px; }
     .problem-resolution { font-family: 'Inter', sans-serif; font-size: clamp(1.2rem, 2vw, 1.55rem); font-weight: 700; color: var(--electric); letter-spacing: -0.02em; }
-
-    /* FEATURES */
     .features { padding: 7rem 5vw; background: var(--paper); }
     .features-header { text-align: center; margin-bottom: 4rem; }
     .section-label { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 1rem; }
@@ -142,8 +67,6 @@
     .feature-bullets { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.5rem; }
     .feature-bullets li { font-size: 0.88rem; color: #444455; display: flex; align-items: center; gap: 0.6rem; line-height: 1.4; font-weight: 400; }
     .feature-bullets li::before { content: '→'; color: var(--electric); font-size: 0.8rem; flex-shrink: 0; }
-
-    /* COMING SOON */
     .coming-soon { background: var(--ink); color: white; padding: 7rem 5vw; text-align: center; }
     .coming-soon .section-label { color: rgba(255,255,255,0.3); }
     .coming-soon .section-title { color: white; margin: 0 auto 1rem; }
@@ -155,8 +78,6 @@
     .coming-title { font-family: 'Inter', sans-serif; font-size: 0.95rem; font-weight: 700; color: white; }
     .coming-desc { font-size: 0.83rem; color: rgba(255,255,255,0.42); line-height: 1.6; font-weight: 400; }
     .coming-badge { font-size: 0.65rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--amber); background: rgba(255,179,71,0.1); border: 1px solid rgba(255,179,71,0.2); border-radius: 100px; padding: 0.25rem 0.7rem; width: fit-content; }
-
-    /* HOW IT WORKS */
     .how { padding: 7rem 5vw; background: var(--paper); text-align: center; }
     .steps-row { display: flex; align-items: flex-start; justify-content: center; gap: 0; max-width: 800px; margin: 0 auto; flex-wrap: wrap; }
     .step-item { flex: 1; min-width: 180px; text-align: center; padding: 0 1.5rem; position: relative; }
@@ -164,8 +85,6 @@
     .step-num { font-family: 'Inter', sans-serif; font-size: 2.5rem; font-weight: 800; color: rgba(10,10,15,0.07); line-height: 1; margin-bottom: 0.8rem; }
     .step-title { font-family: 'Inter', sans-serif; font-size: 0.9rem; font-weight: 700; color: var(--ink); margin-bottom: 0.5rem; }
     .step-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.6; font-weight: 400; }
-
-    /* FINAL CTA */
     .final-cta { background: var(--sky); color: white; padding: 8rem 5vw; text-align: center; }
     .final-cta h2 { font-family: 'Inter', sans-serif; font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 800; letter-spacing: -0.03em; color: white; margin-bottom: 3rem; max-width: 18ch; margin-left: auto; margin-right: auto; }
     .cta-form { display: flex; gap: 0.6rem; justify-content: center; flex-wrap: wrap; max-width: 500px; margin: 0 auto; }
@@ -176,12 +95,8 @@
     .cta-form button:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.15); }
     .cta-note { margin-top: 1rem; font-size: 0.78rem; color: rgba(255,255,255,0.3); }
     .cta-success { display: none; color: var(--electric); font-size: 1rem; font-weight: 500; margin-top: 1rem; }
-
-    /* FOOTER */
     footer { padding: 2.5rem 5vw; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
     footer p { font-size: 0.8rem; color: var(--muted); }
-
-    /* MODAL */
     .modal-overlay { display: none; position: fixed; inset: 0; z-index: 999; background: rgba(10,10,15,0.7); backdrop-filter: blur(6px); align-items: center; justify-content: center; padding: 1.5rem; }
     .modal-overlay.open { display: flex; animation: fadeIn 0.2s ease; }
     .modal { background: white; border-radius: 24px; padding: 2.5rem; width: 100%; max-width: 460px; position: relative; box-shadow: 0 24px 60px rgba(0,0,0,0.2); animation: slideUp 0.25s ease; }
@@ -206,39 +121,20 @@
     .modal-success .success-icon { font-size: 3rem; margin-bottom: 1rem; }
     .modal-success h3 { font-family: 'Inter', sans-serif; font-size: 1.4rem; font-weight: 800; color: var(--ink); margin-bottom: 0.5rem; }
     .modal-success p { font-size: 0.9rem; color: var(--muted); line-height: 1.6; font-weight: 400; }
-
-    /* ANIMATIONS */
     @keyframes fadeUp { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
     @keyframes fadeIn { from{opacity:0} to{opacity:1} }
     @keyframes slideUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
     .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
     .reveal.visible { opacity: 1; transform: translateY(0); }
-
-    /* RESPONSIVE */
-    @media (max-width: 800px) {
-      .features-grid { grid-template-columns: 1fr; }
-      .steps-row { gap: 2rem; }
-      .step-item:not(:last-child)::after { display: none; }
-    }
-    @media (max-width: 600px) {
-      .hero-form { flex-direction: column; align-items: stretch; }
-      .hero-form input, .hero-form button { width: 100%; text-align: center; }
-      .coming-grid { flex-direction: column; align-items: center; }
-      .coming-card { width: 100%; max-width: 340px; }
-      .hero-timeline { flex-direction: column; align-items: center; }
-      .timeline-arrow { transform: rotate(90deg); }
-    }
+    @media (max-width: 800px) { .features-grid { grid-template-columns: 1fr; } .steps-row { gap: 2rem; } .step-item:not(:last-child)::after { display: none; } }
+    @media (max-width: 600px) { .hero-form { flex-direction: column; align-items: stretch; } .hero-form input, .hero-form button { width: 100%; text-align: center; } .coming-grid { flex-direction: column; align-items: center; } .coming-card { width: 100%; max-width: 340px; } .hero-timeline { flex-direction: column; align-items: center; } .timeline-arrow { transform: rotate(90deg); } }
   </style>
 </head>
 <body>
-
-<!-- NAV -->
 <nav>
   <a href="#" class="logo">airrive<span>.AI</span></a>
   <button class="cta-nav" onclick="openModal(event)">Join Beta →</button>
 </nav>
-
-<!-- MODAL -->
 <div class="modal-overlay" id="modal-overlay" onclick="closeOnBackdrop(event)">
   <div class="modal">
     <button class="modal-close" onclick="closeModal()">&#x2715;</button>
@@ -246,20 +142,12 @@
       <div class="modal-eyebrow">&#x2736; Early Access</div>
       <h2>Join the Beta</h2>
       <p class="modal-sub">Be among the first to experience AI-powered travel. We'll reach out when your spot is ready.</p>
-      <div class="form-group">
-        <label>Full Name</label>
-        <input type="text" id="f-name" placeholder="Alex Johnson" />
-      </div>
-      <div class="form-group">
-        <label>Email Address</label>
-        <input type="email" id="f-email" placeholder="alex@email.com" />
-      </div>
+      <div class="form-group"><label>Full Name</label><input type="text" id="f-name" placeholder="Alex Johnson" /></div>
+      <div class="form-group"><label>Email Address</label><input type="email" id="f-email" placeholder="alex@email.com" /></div>
       <div class="form-group">
         <label>Your City / Location</label>
         <div class="location-row">
-          <div class="form-group" style="margin-bottom:0;flex:1">
-            <input type="text" id="f-location" placeholder="San Francisco, CA" />
-          </div>
+          <div class="form-group" style="margin-bottom:0;flex:1"><input type="text" id="f-location" placeholder="San Francisco, CA" /></div>
           <button class="detect-btn" type="button" onclick="detectLocation()">&#x1F4CD; Detect</button>
         </div>
       </div>
@@ -273,64 +161,38 @@
     </div>
   </div>
 </div>
-
-<!-- HERO -->
 <section class="hero">
   <div class="hero-bg"></div>
   <div class="hero-eyebrow">&#x2736; AI Arrival Assistant</div>
+  <div class="wa-badge">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 2C6.477 2 2 6.477 2 12c0 1.767.458 3.43 1.257 4.876L2.057 21.94l5.064-1.2A9.964 9.964 0 0 0 12 22c5.523 0 10-4.477 10-10S17.523 2 12 2z"/></svg>
+    <span>No app needed. Works on WhatsApp.</span>
+  </div>
   <h1>The arrival assistant for <em>modern travel</em></h1>
-  <p class="hero-sub">Airrive watches your flight and handles delays, pickups, and arrival coordination. Automatically.</p>
+  <p class="hero-sub">Airrive watches your flight and notifies your family automatically. No downloads. No new accounts. Just WhatsApp you already use.</p>
   <div class="hero-form">
     <input type="email" id="hero-email" placeholder="Enter your email" />
     <button type="button" onclick="heroSignup()">Get Early Access</button>
   </div>
   <p class="hero-audience">Perfect for families, frequent travelers, and group trips.</p>
   <div class="hero-timeline">
-    <div class="timeline-step">
-      <div class="t-icon">&#x2708;&#xFE0F;</div>
-      <div class="t-label">Flight delayed 25 min</div>
-      <div class="t-sub">Detected automatically</div>
-    </div>
+    <div class="timeline-step"><div class="t-icon">&#x2708;&#xFE0F;</div><div class="t-label">Flight delayed 25 min</div><div class="t-sub">Detected automatically</div></div>
     <div class="timeline-arrow">&#x2192;</div>
-    <div class="timeline-step">
-      <div class="t-icon">&#x1F4F2;</div>
-      <div class="t-label">Family notified</div>
-      <div class="t-sub">No texts needed</div>
-    </div>
+    <div class="timeline-step"><div class="t-icon">&#x1F4F2;</div><div class="t-label">Family notified</div><div class="t-sub">No texts needed</div></div>
     <div class="timeline-arrow">&#x2192;</div>
-    <div class="timeline-step t-outcome">
-      <div class="t-icon">&#x1F697;</div>
-      <div class="t-label">Pickup adjusted to 6:20 PM</div>
-      <div class="t-sub">Everyone's in sync</div>
-    </div>
+    <div class="timeline-step t-outcome"><div class="t-icon">&#x1F4AC;</div><div class="t-label">Everyone is in sync</div><div class="t-sub">Right in WhatsApp</div></div>
   </div>
 </section>
-
-<!-- PROBLEM -->
 <section class="problem reveal">
   <h2 class="problem-title">Travel doesn't break during the flight. It breaks when you land.</h2>
   <div class="problem-bullets">
-    <div class="problem-bullet">
-      <div class="problem-bullet-icon">&#x1F697;</div>
-      <span>Airport pickups arrive too early or too late</span>
-    </div>
-    <div class="problem-bullet">
-      <div class="problem-bullet-icon">&#x1F4F1;</div>
-      <span>Families keep texting "Did you land?"</span>
-    </div>
-    <div class="problem-bullet">
-      <div class="problem-bullet-icon">&#x23F1;</div>
-      <span>Delays ruin connections</span>
-    </div>
-    <div class="problem-bullet">
-      <div class="problem-bullet-icon">&#x1F9F3;</div>
-      <span>Group arrivals become chaotic</span>
-    </div>
+    <div class="problem-bullet"><div class="problem-bullet-icon">&#x1F697;</div><span>Airport pickups arrive too early or too late</span></div>
+    <div class="problem-bullet"><div class="problem-bullet-icon">&#x1F4F1;</div><span>Families keep texting "Did you land?"</span></div>
+    <div class="problem-bullet"><div class="problem-bullet-icon">&#x23F1;</div><span>Delays ruin connections</span></div>
+    <div class="problem-bullet"><div class="problem-bullet-icon">&#x1F9F3;</div><span>Group arrivals become chaotic</span></div>
   </div>
   <p class="problem-resolution">Airrive fixes everything around your arrival.</p>
 </section>
-
-<!-- FEATURES -->
 <section class="features">
   <div class="features-header reveal">
     <p class="section-label">Core Features</p>
@@ -342,11 +204,7 @@
       <div class="feature-icon">&#x1F46A;</div>
       <div class="feature-title">Family Flight Tracker</div>
       <p class="feature-desc">Never wonder where your family is. Get automatic notifications at every key moment.</p>
-      <ul class="feature-bullets">
-        <li>Boards the plane</li>
-        <li>Lands safely</li>
-        <li>Clears connections</li>
-      </ul>
+      <ul class="feature-bullets"><li>Boards the plane</li><li>Lands safely</li><li>Clears connections</li></ul>
     </div>
     <div class="feature-card">
       <div class="feature-icon">&#x26A1;</div>
@@ -357,66 +215,29 @@
       <div class="feature-icon">&#x1F9F3;</div>
       <div class="feature-title">Group Arrival Coordination</div>
       <p class="feature-desc">When multiple people are flying in, Airrive keeps everyone synced.</p>
-      <ul class="feature-bullets">
-        <li>Tracks all arrivals in one view</li>
-        <li>Suggests the best shared pickup time</li>
-        <li>Helps coordinate shared rides</li>
-      </ul>
+      <ul class="feature-bullets"><li>Tracks all arrivals in one view</li><li>Suggests the best shared pickup time</li><li>Helps coordinate shared rides</li></ul>
     </div>
   </div>
 </section>
-
-<!-- COMING SOON -->
 <section class="coming-soon">
   <p class="section-label reveal">On the Roadmap</p>
   <h2 class="section-title reveal">Coming Soon</h2>
-  <p class="section-sub reveal">We're building more ways to take the stress out of travel.</p>
+  <p class="section-sub reveal">We are building more ways to take the stress out of travel.</p>
   <div class="coming-grid reveal">
-    <div class="coming-card">
-      <div class="coming-icon">&#x1F696;</div>
-      <div class="coming-title">Smart Cab Booking</div>
-      <p class="coming-desc">Compare Uber, Lyft, and Ola in real-time. Timed to your flight, one tap to book.</p>
-      <div class="coming-badge">Coming Soon</div>
-    </div>
-    <div class="coming-card">
-      <div class="coming-icon">&#x1F4CA;</div>
-      <div class="coming-title">Travel Pattern Insights</div>
-      <p class="coming-desc">Weekly summaries of your routes: delay patterns, best times to fly, smarter booking.</p>
-      <div class="coming-badge">Coming Soon</div>
-    </div>
-    <div class="coming-card">
-      <div class="coming-icon">&#x1F9FE;</div>
-      <div class="coming-title">Business Expense Auto-log</div>
-      <p class="coming-desc">Automatically capture receipts and timestamps into a ready-to-submit expense report.</p>
-      <div class="coming-badge">Coming Soon</div>
-    </div>
+    <div class="coming-card"><div class="coming-icon">&#x1F696;</div><div class="coming-title">Smart Cab Booking</div><p class="coming-desc">Compare ride options in real time. Timed to your flight, one tap to book.</p><div class="coming-badge">Coming Soon</div></div>
+    <div class="coming-card"><div class="coming-icon">&#x1F4CA;</div><div class="coming-title">Travel Pattern Insights</div><p class="coming-desc">Weekly summaries of your routes: delay patterns, best times to fly, smarter booking decisions.</p><div class="coming-badge">Coming Soon</div></div>
+    <div class="coming-card"><div class="coming-icon">&#x1F9FE;</div><div class="coming-title">Business Expense Log</div><p class="coming-desc">Automatically capture receipts and timestamps into a report that is ready to submit.</p><div class="coming-badge">Coming Soon</div></div>
   </div>
 </section>
-
-<!-- HOW IT WORKS -->
 <section class="how">
   <p class="section-label reveal">How It Works</p>
   <h2 class="section-title reveal">Three steps. Zero stress.</h2>
   <div class="steps-row reveal">
-    <div class="step-item">
-      <div class="step-num">1</div>
-      <div class="step-title">Forward your flight confirmation</div>
-      <p class="step-desc">Just forward your booking email. Airrive reads the details automatically.</p>
-    </div>
-    <div class="step-item">
-      <div class="step-num">2</div>
-      <div class="step-title">Airrive tracks your flight</div>
-      <p class="step-desc">Real-time monitoring starts immediately: gates, delays, connections.</p>
-    </div>
-    <div class="step-item">
-      <div class="step-num">3</div>
-      <div class="step-title">We manage the rest</div>
-      <p class="step-desc">Delays, arrivals, and coordination handled before you have to think about them.</p>
-    </div>
+    <div class="step-item"><div class="step-num">1</div><div class="step-title">Paste your flight number</div><p class="step-desc">Type in your flight number and Airrive starts monitoring immediately.</p></div>
+    <div class="step-item"><div class="step-num">2</div><div class="step-title">Share your tracking link</div><p class="step-desc">Send one link to anyone who needs to know. They follow along on WhatsApp with no setup required.</p></div>
+    <div class="step-item"><div class="step-num">3</div><div class="step-title">We manage the rest</div><p class="step-desc">Delays, arrivals, and family notifications handled before you have to think about them.</p></div>
   </div>
 </section>
-
-<!-- FINAL CTA -->
 <section class="final-cta">
   <h2>Never worry about arrivals again.</h2>
   <div class="cta-form">
@@ -426,44 +247,21 @@
   <p class="cta-note" id="cta-note">No spam. No credit card. Cancel anytime.</p>
   <p class="cta-success" id="cta-success">&#x1F389; You're on the list! We'll be in touch soon.</p>
 </section>
-
-<!-- FOOTER -->
 <footer>
   <a href="#" class="logo">airrive<span>.AI</span></a>
-  <p>&copy; 2025 Airrive.AI &middot; Built for travelers who'd rather not think about logistics.</p>
+  <p>&copy; 2025 Airrive.AI &middot; Built for travelers who would rather not think about logistics.</p>
 </footer>
-
 <script>
-  const SHEET_URL = 'https://script.google.com/macros/s/AKfycbzri5QcP_lZ0G9xOhDfOPK3O710WptTIXqfJsv1sN2-1ENepKXB7E_Xc0qgjxLiHHDf/exec';
-
+  const SHEET_URL = 'https://script.google.com/macros/s/AKfycbwrSFzhbaUxlbhHBBmJHDpQYvpaLlfObssH56rlg73fYKM4ZEsilaaU9feY-CflPgWl/exec';
   const reveals = document.querySelectorAll('.reveal');
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry, i) => {
-      if (entry.isIntersecting) {
-        setTimeout(() => entry.target.classList.add('visible'), i * 80);
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.08 });
+  const observer = new IntersectionObserver((entries) => { entries.forEach((entry, i) => { if (entry.isIntersecting) { setTimeout(() => entry.target.classList.add('visible'), i * 80); observer.unobserve(entry.target); } }); }, { threshold: 0.08 });
   reveals.forEach(el => observer.observe(el));
-
-  function openModal(e) {
-    if (e) e.preventDefault();
-    document.getElementById('modal-overlay').classList.add('open');
-    document.body.style.overflow = 'hidden';
-  }
-  function closeModal() {
-    document.getElementById('modal-overlay').classList.remove('open');
-    document.body.style.overflow = '';
-  }
-  function closeOnBackdrop(e) {
-    if (e.target === document.getElementById('modal-overlay')) closeModal();
-  }
+  function openModal(e) { if (e) e.preventDefault(); document.getElementById('modal-overlay').classList.add('open'); document.body.style.overflow = 'hidden'; }
+  function closeModal() { document.getElementById('modal-overlay').classList.remove('open'); document.body.style.overflow = ''; }
+  function closeOnBackdrop(e) { if (e.target === document.getElementById('modal-overlay')) closeModal(); }
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
-
   function detectLocation() {
-    const btn = document.querySelector('.detect-btn');
-    btn.textContent = 'Detecting...';
+    const btn = document.querySelector('.detect-btn'); btn.textContent = 'Detecting...';
     if (!navigator.geolocation) { btn.textContent = 'Detect'; return; }
     navigator.geolocation.getCurrentPosition(async (pos) => {
       try {
@@ -475,38 +273,22 @@
         document.getElementById('f-location').value = [city, state, country].filter(Boolean).join(', ');
       } catch { document.getElementById('f-location').placeholder = 'Could not detect. Type manually.'; }
       btn.textContent = 'Detect';
-    }, () => {
-      btn.textContent = 'Detect';
-      document.getElementById('f-location').placeholder = 'Type your city manually';
-    });
+    }, () => { btn.textContent = 'Detect'; document.getElementById('f-location').placeholder = 'Type your city manually'; });
   }
-
   async function submitForm() {
-    const name     = document.getElementById('f-name').value.trim();
-    const email    = document.getElementById('f-email').value.trim();
+    const name = document.getElementById('f-name').value.trim();
+    const email = document.getElementById('f-email').value.trim();
     const location = document.getElementById('f-location').value.trim();
-    if (!name)  { document.getElementById('f-name').focus();  return; }
+    if (!name) { document.getElementById('f-name').focus(); return; }
     if (!email) { document.getElementById('f-email').focus(); return; }
     const btn = document.getElementById('modal-submit-btn');
     btn.textContent = 'Submitting...'; btn.disabled = true;
-    try {
-      await fetch(SHEET_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name, email, location: location || 'Not provided' }) });
-    } catch (err) { console.error(err); }
+    try { await fetch(SHEET_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name, email, location: location || 'Not provided' }) }); } catch (err) { console.error(err); }
     document.getElementById('modal-form-content').style.display = 'none';
     document.getElementById('modal-success').style.display = 'block';
   }
-
-  function heroSignup() {
-    const email = document.getElementById('hero-email').value.trim();
-    if (email) document.getElementById('f-email').value = email;
-    openModal();
-  }
-
-  function ctaSignup() {
-    const email = document.getElementById('cta-email').value.trim();
-    if (email) document.getElementById('f-email').value = email;
-    openModal();
-  }
+  function heroSignup() { const email = document.getElementById('hero-email').value.trim(); if (email) document.getElementById('f-email').value = email; openModal(); }
+  function ctaSignup() { const email = document.getElementById('cta-email').value.trim(); if (email) document.getElementById('f-email').value = email; openModal(); }
 </script>
 </body>
 </html>
