@@ -14,6 +14,132 @@
       --wa: #25D366; --wa-light: #E7F9E9; --wa-border: #5DCAA5; --wa-dark: #0F6E56;
     }
     html { scroll-behavior: smooth; }
+    <!--
+  ============================================================
+  AIRRIVE — SURVEY SLIDE-IN PANEL
+  Paste this entire block just before your closing </body> tag
+  in index.html. Then add the trigger button anywhere on the page.
+  ============================================================
+-->
+
+<!-- TRIGGER BUTTON — place this wherever you want on your page -->
+<button class="survey-trigger-btn" onclick="openSurveyPanel()">
+  Share Feedback ✦
+</button>
+
+<!-- PANEL OVERLAY + DRAWER -->
+<div id="surveyOverlay" onclick="closeSurveyPanel()" style="
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(13,13,13,0.45);
+  z-index:8000;
+  backdrop-filter:blur(3px);
+  opacity:0;
+  transition:opacity 0.3s ease;
+"></div>
+
+<div id="surveyPanel" style="
+  position:fixed;
+  top:0; right:0; bottom:0;
+  width:min(520px, 100vw);
+  background:#f5f0e8;
+  z-index:8001;
+  transform:translateX(100%);
+  transition:transform 0.4s cubic-bezier(0.22,1,0.36,1);
+  overflow-y:auto;
+  box-shadow:-8px 0 48px rgba(0,0,0,0.15);
+">
+  <!-- Close button -->
+  <button onclick="closeSurveyPanel()" style="
+    position:sticky;
+    top:0;
+    float:right;
+    margin:16px 16px 0 0;
+    background:rgba(245,240,232,0.9);
+    border:1.5px solid #e0d9ce;
+    border-radius:50%;
+    width:36px; height:36px;
+    font-size:1.1rem;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:10;
+    backdrop-filter:blur(4px);
+  ">✕</button>
+
+  <!-- Survey iframe — loads survey.html lazily -->
+  <iframe
+    id="surveyIframe"
+    src=""
+    data-src="survey.html"
+    style="width:100%; height:100%; border:none; min-height:100vh;"
+    title="Airrive Feedback Survey"
+  ></iframe>
+</div>
+
+<!-- Trigger button styles — customise to match your site -->
+<style>
+  .survey-trigger-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    color: #e8420a;
+    border: 1.5px solid #e8420a;
+    border-radius: 8px;
+    padding: 12px 24px;
+    font-family: 'Syne', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+  }
+
+  .survey-trigger-btn:hover {
+    background: #e8420a;
+    color: #fff;
+  }
+</style>
+
+<script>
+  function openSurveyPanel() {
+    const overlay = document.getElementById('surveyOverlay');
+    const panel   = document.getElementById('surveyPanel');
+    const iframe  = document.getElementById('surveyIframe');
+
+    // Lazy-load the survey only on first open
+    if (!iframe.src || iframe.src === window.location.href) {
+      iframe.src = iframe.dataset.src;
+    }
+
+    overlay.style.display = 'block';
+    document.body.style.overflow = 'hidden';
+
+    requestAnimationFrame(() => {
+      overlay.style.opacity = '1';
+      panel.style.transform = 'translateX(0)';
+    });
+  }
+
+  function closeSurveyPanel() {
+    const overlay = document.getElementById('surveyOverlay');
+    const panel   = document.getElementById('surveyPanel');
+
+    overlay.style.opacity = '0';
+    panel.style.transform = 'translateX(100%)';
+    document.body.style.overflow = '';
+
+    setTimeout(() => { overlay.style.display = 'none'; }, 350);
+  }
+
+  // Close on Escape key
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeSurveyPanel();
+  });
+</script>
     body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background: var(--paper); color: var(--ink); overflow-x: hidden; }
     nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 1.2rem 5vw; background: rgba(245,242,235,0.92); backdrop-filter: blur(14px); border-bottom: 1px solid var(--border); }
     .logo { font-family: 'Inter', sans-serif; font-weight: 800; font-size: 1.25rem; letter-spacing: -0.03em; color: var(--ink); text-decoration: none; }
