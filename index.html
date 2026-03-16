@@ -14,138 +14,15 @@
       --wa: #25D366; --wa-light: #E7F9E9; --wa-border: #5DCAA5; --wa-dark: #0F6E56;
     }
     html { scroll-behavior: smooth; }
-    <!--
-  ============================================================
-  AIRRIVE — SURVEY SLIDE-IN PANEL
-  Paste this entire block just before your closing </body> tag
-  in index.html. Then add the trigger button anywhere on the page.
-  ============================================================
--->
-
-<!-- TRIGGER BUTTON — place this wherever you want on your page -->
-<button class="survey-trigger-btn" onclick="openSurveyPanel()">
-  Share Feedback ✦
-</button>
-
-<!-- PANEL OVERLAY + DRAWER -->
-<div id="surveyOverlay" onclick="closeSurveyPanel()" style="
-  display:none;
-  position:fixed;
-  inset:0;
-  background:rgba(13,13,13,0.45);
-  z-index:8000;
-  backdrop-filter:blur(3px);
-  opacity:0;
-  transition:opacity 0.3s ease;
-"></div>
-
-<div id="surveyPanel" style="
-  position:fixed;
-  top:0; right:0; bottom:0;
-  width:min(520px, 100vw);
-  background:#f5f0e8;
-  z-index:8001;
-  transform:translateX(100%);
-  transition:transform 0.4s cubic-bezier(0.22,1,0.36,1);
-  overflow-y:auto;
-  box-shadow:-8px 0 48px rgba(0,0,0,0.15);
-">
-  <!-- Close button -->
-  <button onclick="closeSurveyPanel()" style="
-    position:sticky;
-    top:0;
-    float:right;
-    margin:16px 16px 0 0;
-    background:rgba(245,240,232,0.9);
-    border:1.5px solid #e0d9ce;
-    border-radius:50%;
-    width:36px; height:36px;
-    font-size:1.1rem;
-    cursor:pointer;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    z-index:10;
-    backdrop-filter:blur(4px);
-  ">✕</button>
-
-  <!-- Survey iframe — loads survey.html lazily -->
-  <iframe
-    id="surveyIframe"
-    src=""
-    data-src="survey.html"
-    style="width:100%; height:100%; border:none; min-height:100vh;"
-    title="Airrive Feedback Survey"
-  ></iframe>
-</div>
-
-<!-- Trigger button styles — customise to match your site -->
-<style>
-  .survey-trigger-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: transparent;
-    color: #e8420a;
-    border: 1.5px solid #e8420a;
-    border-radius: 8px;
-    padding: 12px 24px;
-    font-family: 'Syne', sans-serif;
-    font-size: 0.88rem;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    cursor: pointer;
-    transition: background 0.2s, color 0.2s;
-  }
-
-  .survey-trigger-btn:hover {
-    background: #e8420a;
-    color: #fff;
-  }
-</style>
-
-<script>
-  function openSurveyPanel() {
-    const overlay = document.getElementById('surveyOverlay');
-    const panel   = document.getElementById('surveyPanel');
-    const iframe  = document.getElementById('surveyIframe');
-
-    // Lazy-load the survey only on first open
-    if (!iframe.src || iframe.src === window.location.href) {
-      iframe.src = iframe.dataset.src;
-    }
-
-    overlay.style.display = 'block';
-    document.body.style.overflow = 'hidden';
-
-    requestAnimationFrame(() => {
-      overlay.style.opacity = '1';
-      panel.style.transform = 'translateX(0)';
-    });
-  }
-
-  function closeSurveyPanel() {
-    const overlay = document.getElementById('surveyOverlay');
-    const panel   = document.getElementById('surveyPanel');
-
-    overlay.style.opacity = '0';
-    panel.style.transform = 'translateX(100%)';
-    document.body.style.overflow = '';
-
-    setTimeout(() => { overlay.style.display = 'none'; }, 350);
-  }
-
-  // Close on Escape key
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') closeSurveyPanel();
-  });
-</script>
     body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background: var(--paper); color: var(--ink); overflow-x: hidden; }
     nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 1.2rem 5vw; background: rgba(245,242,235,0.92); backdrop-filter: blur(14px); border-bottom: 1px solid var(--border); }
     .logo { font-family: 'Inter', sans-serif; font-weight: 800; font-size: 1.25rem; letter-spacing: -0.03em; color: var(--ink); text-decoration: none; }
     .logo span { color: var(--electric); }
+    .nav-right { display: flex; align-items: center; gap: 0.75rem; }
     .cta-nav { font-family: 'Inter', sans-serif; font-size: 0.85rem; font-weight: 600; background: var(--ink); color: var(--paper); padding: 0.55rem 1.3rem; border-radius: 100px; text-decoration: none; cursor: pointer; transition: background 0.2s; border: none; }
     .cta-nav:hover { background: var(--sky); }
+    .survey-nav-btn { font-family: 'Inter', sans-serif; font-size: 0.85rem; font-weight: 600; background: transparent; color: var(--ink); padding: 0.55rem 1.3rem; border-radius: 100px; cursor: pointer; transition: background 0.2s; border: 1.5px solid var(--border); }
+    .survey-nav-btn:hover { background: rgba(10,10,15,0.05); }
     .hero { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 9rem 5vw 6rem; position: relative; overflow: hidden; }
     .hero-bg { position: absolute; inset: 0; z-index: 0; background: radial-gradient(ellipse 70% 60% at 60% 30%, rgba(0,200,255,0.07) 0%, transparent 65%), radial-gradient(ellipse 50% 50% at 30% 80%, rgba(26,58,92,0.06) 0%, transparent 60%); }
     .hero-eyebrow { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--electric); background: rgba(0,200,255,0.1); border: 1px solid rgba(0,200,255,0.2); display: inline-block; padding: 0.35rem 1rem; border-radius: 100px; margin-bottom: 1rem; position: relative; z-index: 1; animation: fadeUp 0.6s ease both; }
@@ -247,6 +124,9 @@
     .modal-success .success-icon { font-size: 3rem; margin-bottom: 1rem; }
     .modal-success h3 { font-family: 'Inter', sans-serif; font-size: 1.4rem; font-weight: 800; color: var(--ink); margin-bottom: 0.5rem; }
     .modal-success p { font-size: 0.9rem; color: var(--muted); line-height: 1.6; font-weight: 400; }
+    /* Survey panel */
+    .survey-trigger-btn { font-family: 'Inter', sans-serif; font-size: 0.85rem; font-weight: 600; background: transparent; color: var(--ink); padding: 0.55rem 1.3rem; border-radius: 100px; cursor: pointer; transition: background 0.2s; border: 1.5px solid var(--border); }
+    .survey-trigger-btn:hover { background: rgba(10,10,15,0.05); }
     @keyframes fadeUp { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
     @keyframes fadeIn { from{opacity:0} to{opacity:1} }
     @keyframes slideUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
@@ -257,10 +137,15 @@
   </style>
 </head>
 <body>
+
 <nav>
   <a href="#" class="logo">airrive<span>.AI</span></a>
-  <button class="cta-nav" onclick="openModal(event)">Join Beta →</button>
+  <div class="nav-right">
+    <button class="survey-trigger-btn" onclick="openSurveyPanel()">Share Feedback ✦</button>
+    <button class="cta-nav" onclick="openModal(event)">Join Beta →</button>
+  </div>
 </nav>
+
 <div class="modal-overlay" id="modal-overlay" onclick="closeOnBackdrop(event)">
   <div class="modal">
     <button class="modal-close" onclick="closeModal()">&#x2715;</button>
@@ -287,6 +172,7 @@
     </div>
   </div>
 </div>
+
 <section class="hero">
   <div class="hero-bg"></div>
   <div class="hero-eyebrow">&#x2736; AI Arrival Assistant</div>
@@ -309,6 +195,7 @@
     <div class="timeline-step t-outcome"><div class="t-icon">&#x1F4AC;</div><div class="t-label">Everyone is in sync</div><div class="t-sub">Right in WhatsApp</div></div>
   </div>
 </section>
+
 <section class="problem reveal">
   <h2 class="problem-title">Travel doesn't break during the flight. It breaks when you land.</h2>
   <div class="problem-bullets">
@@ -319,6 +206,7 @@
   </div>
   <p class="problem-resolution">Airrive fixes everything around your arrival.</p>
 </section>
+
 <section class="features">
   <div class="features-header reveal">
     <p class="section-label">Core Features</p>
@@ -345,6 +233,7 @@
     </div>
   </div>
 </section>
+
 <section class="coming-soon">
   <p class="section-label reveal">On the Roadmap</p>
   <h2 class="section-title reveal">Coming Soon</h2>
@@ -355,6 +244,7 @@
     <div class="coming-card"><div class="coming-icon">&#x1F9FE;</div><div class="coming-title">Business Expense Log</div><p class="coming-desc">Automatically capture receipts and timestamps into a report that is ready to submit.</p><div class="coming-badge">Coming Soon</div></div>
   </div>
 </section>
+
 <section class="how">
   <p class="section-label reveal">How It Works</p>
   <h2 class="section-title reveal">Three steps. Zero stress.</h2>
@@ -364,6 +254,7 @@
     <div class="step-item"><div class="step-num">3</div><div class="step-title">We manage the rest</div><p class="step-desc">Delays, arrivals, and family notifications handled before you have to think about them.</p></div>
   </div>
 </section>
+
 <section class="final-cta">
   <h2>Never worry about arrivals again.</h2>
   <div class="cta-form">
@@ -373,19 +264,33 @@
   <p class="cta-note" id="cta-note">No spam. No credit card. Cancel anytime.</p>
   <p class="cta-success" id="cta-success">&#x1F389; You're on the list! We'll be in touch soon.</p>
 </section>
+
 <footer>
   <a href="#" class="logo">airrive<span>.AI</span></a>
   <p>&copy; 2025 Airrive.AI &middot; Built for travelers who would rather not think about logistics.</p>
 </footer>
+
+<!-- ===================== SURVEY SLIDE-IN PANEL ===================== -->
+<div id="surveyOverlay" onclick="closeSurveyPanel()" style="display:none;position:fixed;inset:0;background:rgba(13,13,13,0.45);z-index:8000;backdrop-filter:blur(3px);opacity:0;transition:opacity 0.3s ease;"></div>
+
+<div id="surveyPanel" style="position:fixed;top:0;right:0;bottom:0;width:min(520px,100vw);background:#f5f0e8;z-index:8001;transform:translateX(100%);transition:transform 0.4s cubic-bezier(0.22,1,0.36,1);overflow-y:auto;box-shadow:-8px 0 48px rgba(0,0,0,0.15);">
+  <button onclick="closeSurveyPanel()" style="position:sticky;top:0;float:right;margin:16px 16px 0 0;background:rgba(245,240,232,0.9);border:1.5px solid #e0d9ce;border-radius:50%;width:36px;height:36px;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:10;backdrop-filter:blur(4px);">✕</button>
+  <iframe id="surveyIframe" src="" data-src="survey.html" style="width:100%;height:100%;border:none;min-height:100vh;" title="Airrive Feedback Survey"></iframe>
+</div>
+<!-- ================================================================= -->
+
 <script>
   const SHEET_URL = 'https://script.google.com/macros/s/AKfycbwrSFzhbaUxlbhHBBmJHDpQYvpaLlfObssH56rlg73fYKM4ZEsilaaU9feY-CflPgWl/exec';
+
   const reveals = document.querySelectorAll('.reveal');
   const observer = new IntersectionObserver((entries) => { entries.forEach((entry, i) => { if (entry.isIntersecting) { setTimeout(() => entry.target.classList.add('visible'), i * 80); observer.unobserve(entry.target); } }); }, { threshold: 0.08 });
   reveals.forEach(el => observer.observe(el));
+
   function openModal(e) { if (e) e.preventDefault(); document.getElementById('modal-overlay').classList.add('open'); document.body.style.overflow = 'hidden'; }
   function closeModal() { document.getElementById('modal-overlay').classList.remove('open'); document.body.style.overflow = ''; }
   function closeOnBackdrop(e) { if (e.target === document.getElementById('modal-overlay')) closeModal(); }
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeModal(); closeSurveyPanel(); } });
+
   function detectLocation() {
     const btn = document.querySelector('.detect-btn'); btn.textContent = 'Detecting...';
     if (!navigator.geolocation) { btn.textContent = 'Detect'; return; }
@@ -401,6 +306,7 @@
       btn.textContent = 'Detect';
     }, () => { btn.textContent = 'Detect'; document.getElementById('f-location').placeholder = 'Type your city manually'; });
   }
+
   async function submitForm() {
     const name = document.getElementById('f-name').value.trim();
     const email = document.getElementById('f-email').value.trim();
@@ -413,8 +319,28 @@
     document.getElementById('modal-form-content').style.display = 'none';
     document.getElementById('modal-success').style.display = 'block';
   }
+
   function heroSignup() { const email = document.getElementById('hero-email').value.trim(); if (email) document.getElementById('f-email').value = email; openModal(); }
   function ctaSignup() { const email = document.getElementById('cta-email').value.trim(); if (email) document.getElementById('f-email').value = email; openModal(); }
+
+  function openSurveyPanel() {
+    const overlay = document.getElementById('surveyOverlay');
+    const panel = document.getElementById('surveyPanel');
+    const iframe = document.getElementById('surveyIframe');
+    if (!iframe.src || iframe.src === window.location.href) iframe.src = iframe.dataset.src;
+    overlay.style.display = 'block';
+    document.body.style.overflow = 'hidden';
+    requestAnimationFrame(() => { overlay.style.opacity = '1'; panel.style.transform = 'translateX(0)'; });
+  }
+
+  function closeSurveyPanel() {
+    const overlay = document.getElementById('surveyOverlay');
+    const panel = document.getElementById('surveyPanel');
+    overlay.style.opacity = '0';
+    panel.style.transform = 'translateX(100%)';
+    document.body.style.overflow = '';
+    setTimeout(() => { overlay.style.display = 'none'; }, 350);
+  }
 </script>
 </body>
 </html>
