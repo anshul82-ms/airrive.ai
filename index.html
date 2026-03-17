@@ -271,11 +271,168 @@
 </footer>
 
 <!-- ===================== SURVEY SLIDE-IN PANEL ===================== -->
-<div id="surveyOverlay" onclick="closeSurveyPanel()" style="display:none;position:fixed;inset:0;background:rgba(13,13,13,0.45);z-index:8000;backdrop-filter:blur(3px);opacity:0;transition:opacity 0.3s ease;"></div>
+<style>
+  :root {
+    --s-accent: #e8420a;
+    --s-accent2: #1a6bfa;
+    --s-paper: #f5f0e8;
+    --s-border: #e0d9ce;
+    --s-muted: #7a7469;
+    --s-card: #ffffff;
+  }
+  #surveyPanel { position:fixed;top:0;right:0;bottom:0;width:min(520px,100vw);background:var(--s-paper);z-index:8001;transform:translateX(100%);transition:transform 0.4s cubic-bezier(0.22,1,0.36,1);overflow-y:auto;box-shadow:-8px 0 48px rgba(0,0,0,0.15); }
+  #surveyOverlay { display:none;position:fixed;inset:0;background:rgba(13,13,13,0.45);z-index:8000;backdrop-filter:blur(3px);opacity:0;transition:opacity 0.3s ease; }
+  .sp-wrap { padding: 32px 24px 64px; font-family: 'Inter', sans-serif; }
+  .sp-close-row { display:flex;justify-content:space-between;align-items:center;margin-bottom:28px; }
+  .sp-logo { font-weight:800;font-size:1rem;letter-spacing:0.06em;text-transform:uppercase;color:var(--s-accent); }
+  .sp-close { width:34px;height:34px;border-radius:50%;border:1.5px solid var(--s-border);background:transparent;cursor:pointer;font-size:1rem;color:var(--s-muted);display:flex;align-items:center;justify-content:center; }
+  .sp-close:hover { background:var(--s-border); }
+  .sp-eyebrow { font-size:0.7rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--s-muted);margin-bottom:8px; }
+  .sp-h1 { font-size:1.6rem;font-weight:800;line-height:1.15;margin-bottom:8px;color:#0d0d0d; }
+  .sp-h1 span { color:var(--s-accent); }
+  .sp-sub { font-size:0.88rem;color:var(--s-muted);line-height:1.6;margin-bottom:28px; }
+  .sp-progress { display:flex;gap:6px;margin-bottom:6px; }
+  .sp-dot { height:4px;width:24px;border-radius:2px;background:var(--s-border);transition:background 0.3s; }
+  .sp-dot.active { background:var(--s-accent); }
+  .sp-dot.done { background:#0d0d0d; }
+  .sp-prog-label { font-size:0.72rem;color:var(--s-muted);margin-bottom:24px; }
+  .sp-section-title { font-size:1rem;font-weight:700;margin-bottom:4px;color:#0d0d0d; }
+  .sp-section-sub { font-size:0.82rem;color:var(--s-muted);margin-bottom:18px;line-height:1.5; }
+  .sp-cards { display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:28px; }
+  @media(max-width:480px){ .sp-cards { grid-template-columns:1fr; } }
+  .sp-card { background:var(--s-card);border:1.5px solid var(--s-border);border-radius:12px;padding:14px;cursor:default;transition:border-color 0.2s;position:relative;overflow:hidden; }
+  .sp-card::before { content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--s-accent);transform:scaleX(0);transform-origin:left;transition:transform 0.3s; }
+  .sp-card.rated { border-color:var(--s-accent);background:#fffaf7; }
+  .sp-card.rated::before { transform:scaleX(1); }
+  .sp-card-icon { font-size:1.3rem;margin-bottom:6px;display:block; }
+  .sp-card-title { font-size:0.82rem;font-weight:700;margin-bottom:4px;line-height:1.3;color:#0d0d0d; }
+  .sp-card-desc { font-size:0.75rem;color:var(--s-muted);line-height:1.45;margin-bottom:10px; }
+  .sp-stars { display:flex;gap:3px; }
+  .sp-star { font-size:1.1rem;cursor:pointer;color:#d4cec5;transition:transform 0.1s;user-select:none; }
+  .sp-star:hover { transform:scale(1.2); }
+  .sp-star.lit { color:#f5a623; }
+  .sp-rating-lbl { font-size:0.68rem;color:var(--s-muted);margin-top:3px;height:12px; }
+  .sp-field { margin-bottom:20px; }
+  .sp-label { font-size:0.8rem;font-weight:600;color:#0d0d0d;display:block;margin-bottom:5px; }
+  .sp-hint { font-size:0.74rem;color:var(--s-muted);display:block;margin-bottom:8px; }
+  .sp-textarea { width:100%;background:var(--s-card);border:1.5px solid var(--s-border);border-radius:8px;padding:12px 14px;font-family:'Inter',sans-serif;font-size:0.85rem;color:#0d0d0d;resize:vertical;outline:none;min-height:80px;line-height:1.5;transition:border-color 0.2s; }
+  .sp-textarea:focus { border-color:var(--s-accent2); }
+  .sp-chips { display:flex;flex-wrap:wrap;gap:6px; }
+  .sp-chip { padding:6px 12px;border-radius:100px;border:1.5px solid var(--s-border);font-size:0.76rem;font-family:'Inter',sans-serif;cursor:pointer;background:var(--s-card);color:#0d0d0d;user-select:none;transition:all 0.15s; }
+  .sp-chip:hover { border-color:#b0a99e; }
+  .sp-chip.on { background:#0d0d0d;color:var(--s-paper);border-color:#0d0d0d; }
+  .sp-input { width:100%;background:var(--s-card);border:1.5px solid var(--s-border);border-radius:8px;padding:12px 14px;font-family:'Inter',sans-serif;font-size:0.85rem;color:#0d0d0d;outline:none;transition:border-color 0.2s; }
+  .sp-input:focus { border-color:var(--s-accent2); }
+  .sp-submit { display:inline-flex;align-items:center;gap:8px;background:var(--s-accent);color:white;border:none;border-radius:8px;padding:14px 28px;font-family:'Inter',sans-serif;font-size:0.9rem;font-weight:700;cursor:pointer;margin-top:6px;transition:background 0.2s,transform 0.1s; }
+  .sp-submit:hover { background:#c93508;transform:translateY(-1px); }
+  .sp-submit-note { font-size:0.72rem;color:var(--s-muted);margin-top:8px; }
+  .sp-error { font-size:0.72rem;color:var(--s-accent);margin-top:5px;display:none; }
+  .sp-thankyou { display:none;text-align:center;padding:48px 16px; }
+  .sp-thankyou.visible { display:block; }
+  .sp-ty-icon { font-size:2.5rem;margin-bottom:14px; }
+  .sp-ty-h2 { font-size:1.4rem;font-weight:800;margin-bottom:8px;color:#0d0d0d; }
+  .sp-ty-p { font-size:0.85rem;color:var(--s-muted);line-height:1.6;max-width:340px;margin:0 auto 20px; }
+  .sp-share-row { display:flex;justify-content:center;gap:8px;flex-wrap:wrap; }
+  .sp-share-btn { padding:9px 16px;border-radius:7px;font-size:0.8rem;font-family:'Inter',sans-serif;font-weight:600;cursor:pointer;border:1.5px solid #0d0d0d;background:transparent;color:#0d0d0d;display:flex;align-items:center;gap:5px;transition:all 0.15s; }
+  .sp-share-btn:hover { background:#0d0d0d;color:var(--s-paper); }
+  .sp-wa-btn { background:#25d366;border-color:#25d366;color:white; }
+  .sp-wa-btn:hover { background:#1dba58;border-color:#1dba58;color:white; }
+</style>
 
-<div id="surveyPanel" style="position:fixed;top:0;right:0;bottom:0;width:min(520px,100vw);background:#f5f0e8;z-index:8001;transform:translateX(100%);transition:transform 0.4s cubic-bezier(0.22,1,0.36,1);overflow-y:auto;box-shadow:-8px 0 48px rgba(0,0,0,0.15);">
-  <button onclick="closeSurveyPanel()" style="position:sticky;top:0;float:right;margin:16px 16px 0 0;background:rgba(245,240,232,0.9);border:1.5px solid #e0d9ce;border-radius:50%;width:36px;height:36px;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:10;backdrop-filter:blur(4px);">✕</button>
-  <iframe id="surveyIframe" src="" data-src="survey.html" style="width:100%;height:100%;border:none;min-height:100vh;" title="Airrive Feedback Survey"></iframe>
+<div id="surveyOverlay" onclick="closeSurveyPanel()"></div>
+
+<div id="surveyPanel">
+  <div class="sp-wrap">
+    <div class="sp-close-row">
+      <div class="sp-logo">✦ Airrive</div>
+      <button class="sp-close" onclick="closeSurveyPanel()">✕</button>
+    </div>
+
+    <div class="sp-eyebrow">Early Access Research</div>
+    <div class="sp-h1">Help us build what <span>actually matters</span></div>
+    <div class="sp-sub">We're in early concept stage. Your honest input shapes what we build first. Takes 2 minutes.</div>
+
+    <div class="sp-progress">
+      <div class="sp-dot active" id="sp-dot1"></div>
+      <div class="sp-dot" id="sp-dot2"></div>
+      <div class="sp-dot" id="sp-dot3"></div>
+    </div>
+    <div class="sp-prog-label" id="sp-prog-label">Step 1 of 3 — Rate use cases</div>
+
+    <div id="sp-form">
+      <!-- SECTION 1: Cards -->
+      <div class="sp-section-title">How useful would each of these be?</div>
+      <div class="sp-section-sub">Rate each one. 1 star = not useful, 5 stars = must have.</div>
+
+      <div class="sp-cards" id="sp-cards">
+        <div class="sp-card" data-id="smart-cab"><span class="sp-card-icon">🚖</span><div class="sp-card-title">Smart Cab Booking</div><div class="sp-card-desc">Book a cab timed to your actual arrival. Compares Ola, Uber & Lyft in real-time. One link, one tap, done.</div><div class="sp-stars"></div><div class="sp-rating-lbl"></div></div>
+        <div class="sp-card" data-id="flight-summary"><span class="sp-card-icon">📊</span><div class="sp-card-title">Flight Pattern Summary</div><div class="sp-card-desc">Weekly history with delay pattern analysis. Know which routes and airlines to avoid before you book.</div><div class="sp-stars"></div><div class="sp-rating-lbl"></div></div>
+        <div class="sp-card" data-id="family-tracker"><span class="sp-card-icon">👨‍👩‍👧</span><div class="sp-card-title">Family Tracker</div><div class="sp-card-desc">Passively monitor a family member's flight. Get notified when they board, land, and clear connections.</div><div class="sp-stars"></div><div class="sp-rating-lbl"></div></div>
+        <div class="sp-card" data-id="dynamic-rebooking"><span class="sp-card-icon">🔄</span><div class="sp-card-title">Dynamic Rebooking</div><div class="sp-card-desc">If a delay means you'll miss your connection, Airrive surfaces rebooking options before the airline does.</div><div class="sp-stars"></div><div class="sp-rating-lbl"></div></div>
+        <div class="sp-card" data-id="group-arrival"><span class="sp-card-icon">🧳</span><div class="sp-card-title">Group Arrival Coordination</div><div class="sp-card-desc">Multiple people flying in from different cities? Consolidates all arrivals and suggests a shared transfer.</div><div class="sp-stars"></div><div class="sp-rating-lbl"></div></div>
+        <div class="sp-card" data-id="expense-log"><span class="sp-card-icon">🧾</span><div class="sp-card-title">Business Expense Auto-log</div><div class="sp-card-desc">Automatically captures cab receipts, flight details, and timestamps into a formatted expense report draft.</div><div class="sp-stars"></div><div class="sp-rating-lbl"></div></div>
+      </div>
+
+      <!-- SECTION 2: Story -->
+      <div class="sp-section-title">Tell us about your travel stress</div>
+      <div class="sp-section-sub" style="margin-bottom:18px;">We want to understand the real moments of stress. Not just the features.</div>
+
+      <div class="sp-field">
+        <label class="sp-label">What's the most stressful moment when you or a loved one is flying?</label>
+        <textarea class="sp-textarea" id="sp-stress" placeholder="e.g. My parents always panic during the 2-hour window when I've taken off but haven't landed yet..."></textarea>
+      </div>
+
+      <div class="sp-field">
+        <label class="sp-label">Any use case you'd love to see that we haven't mentioned?</label>
+        <textarea class="sp-textarea" id="sp-idea" placeholder="e.g. I wish I could track my elderly parent's connecting flight when they travel alone..."></textarea>
+      </div>
+
+      <!-- SECTION 3: Profile -->
+      <div class="sp-section-title">One last thing</div>
+      <div class="sp-section-sub" style="margin-bottom:18px;">Helps us understand who we're building for.</div>
+
+      <div class="sp-field">
+        <label class="sp-label">How often do you or your family fly?</label>
+        <div class="sp-chips" id="sp-freq">
+          <div class="sp-chip" data-val="rarely">Rarely (1–2x/year)</div>
+          <div class="sp-chip" data-val="sometimes">Sometimes (3–6x/year)</div>
+          <div class="sp-chip" data-val="often">Often (monthly)</div>
+          <div class="sp-chip" data-val="frequent">Very frequent (weekly)</div>
+        </div>
+      </div>
+
+      <div class="sp-field">
+        <label class="sp-label">Cell number (optional)</label>
+        <input class="sp-input" type="text" id="sp-phone" placeholder="+91 98765 43210" />
+      </div>
+
+      <div class="sp-field">
+        <label class="sp-label">Email address (optional)</label>
+        <input class="sp-input" type="email" id="sp-email" placeholder="you@email.com" />
+      </div>
+
+      <button class="sp-submit" onclick="spSubmit()">
+        Submit feedback
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="sp-submit-note">We'll reach out personally when we launch. No spam, ever.</div>
+      <div class="sp-error" id="sp-error">Please rate at least 2 use cases before submitting.</div>
+    </div>
+
+    <!-- Thank you -->
+    <div class="sp-thankyou" id="sp-thankyou">
+      <div class="sp-ty-icon">🛫</div>
+      <div class="sp-ty-h2">You're on board.</div>
+      <p class="sp-ty-p">Your feedback will directly shape what Airrive builds first. We'll personally reach out when we're ready for beta testers.</p>
+      <div class="sp-share-row">
+        <button class="sp-share-btn sp-wa-btn" onclick="spShareWA()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Share on WhatsApp
+        </button>
+        <button class="sp-share-btn" onclick="spCopyLink()">Copy link</button>
+      </div>
+    </div>
+  </div>
 </div>
 <!-- ================================================================= -->
 
@@ -326,8 +483,6 @@
   function openSurveyPanel() {
     const overlay = document.getElementById('surveyOverlay');
     const panel = document.getElementById('surveyPanel');
-    const iframe = document.getElementById('surveyIframe');
-    if (!iframe.src || iframe.src === window.location.href) iframe.src = iframe.dataset.src;
     overlay.style.display = 'block';
     document.body.style.overflow = 'hidden';
     requestAnimationFrame(() => { overlay.style.opacity = '1'; panel.style.transform = 'translateX(0)'; });
@@ -340,6 +495,90 @@
     panel.style.transform = 'translateX(100%)';
     document.body.style.overflow = '';
     setTimeout(() => { overlay.style.display = 'none'; }, 350);
+  }
+
+  // Survey logic
+  const spRatingLabels = ['','Not for me','Probably not','Might use it','Would love this','Must have!'];
+  const spRatings = {};
+
+  document.querySelectorAll('.sp-card').forEach(card => {
+    const id = card.dataset.id;
+    const starsRow = card.querySelector('.sp-stars');
+    const lbl = card.querySelector('.sp-rating-lbl');
+    for (let i = 1; i <= 5; i++) {
+      const s = document.createElement('span');
+      s.className = 'sp-star'; s.textContent = '★'; s.dataset.val = i;
+      s.addEventListener('mouseenter', () => spHighlight(starsRow, i));
+      s.addEventListener('mouseleave', () => spHighlight(starsRow, spRatings[id] || 0));
+      s.addEventListener('click', () => {
+        spRatings[id] = i; spHighlight(starsRow, i);
+        lbl.textContent = spRatingLabels[i]; card.classList.add('rated');
+        spUpdateProgress();
+      });
+      starsRow.appendChild(s);
+    }
+  });
+
+  function spHighlight(row, val) {
+    row.querySelectorAll('.sp-star').forEach((s, i) => s.classList.toggle('lit', i < val));
+  }
+
+  document.querySelectorAll('.sp-chips').forEach(group => {
+    group.querySelectorAll('.sp-chip').forEach(chip => {
+      chip.addEventListener('click', () => chip.classList.toggle('on'));
+    });
+  });
+
+  function spUpdateProgress() {
+    const rated = Object.keys(spRatings).length;
+    const textFilled = (document.getElementById('sp-stress')?.value.trim().length > 0) ||
+                       (document.getElementById('sp-idea')?.value.trim().length > 0);
+    const d1 = document.getElementById('sp-dot1');
+    const d2 = document.getElementById('sp-dot2');
+    const d3 = document.getElementById('sp-dot3');
+    const lbl = document.getElementById('sp-prog-label');
+    if (rated >= 4) { d1.className='sp-dot done'; d2.className='sp-dot active'; lbl.textContent='Step 2 of 3 — Share your story'; }
+    if (rated >= 4 && textFilled) { d2.className='sp-dot done'; d3.className='sp-dot active'; lbl.textContent='Step 3 of 3 — Almost done!'; }
+  }
+
+  document.getElementById('sp-stress')?.addEventListener('input', spUpdateProgress);
+  document.getElementById('sp-idea')?.addEventListener('input', spUpdateProgress);
+
+  function spSubmit() {
+    if (Object.keys(spRatings).length < 2) {
+      document.getElementById('sp-error').style.display = 'block'; return;
+    }
+    document.getElementById('sp-error').style.display = 'none';
+    const data = {
+      type: 'survey',
+      ratings: spRatings,
+      who: [...document.querySelectorAll('#sp-who .sp-chip.on')].map(c => c.dataset.val),
+      frequency: [...document.querySelectorAll('#sp-freq .sp-chip.on')].map(c => c.dataset.val),
+      stressStory: document.getElementById('sp-stress').value,
+      openIdea: document.getElementById('sp-idea').value,
+      phone: document.getElementById('sp-phone').value,
+      email: document.getElementById('sp-email').value,
+      timestamp: new Date().toISOString()
+    };
+    fetch(SHEET_URL, { method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'}, body:JSON.stringify(data) }).catch(console.error);
+    document.getElementById('sp-form').style.opacity = '0';
+    setTimeout(() => {
+      document.getElementById('sp-form').style.display = 'none';
+      document.getElementById('sp-thankyou').classList.add('visible');
+    }, 300);
+  }
+
+  function spShareWA() {
+    const text = encodeURIComponent("Help the team behind Airrive understand what travellers need. Takes 2 mins: " + window.location.origin + "/survey.html");
+    window.open("https://wa.me/?text=" + text, "_blank");
+  }
+
+  function spCopyLink() {
+    navigator.clipboard.writeText(window.location.origin + "/survey.html").then(() => {
+      const btn = event.target.closest('.sp-share-btn');
+      const orig = btn.textContent; btn.textContent = '✓ Copied!';
+      setTimeout(() => btn.textContent = orig, 2000);
+    });
   }
 </script>
 </body>
