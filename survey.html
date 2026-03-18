@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Airrive — Help Us Build Right</title>
+<meta property="og:title" content="Help us build Airrive right" />
+<meta property="og:description" content="Rate our use cases and share your travel pain points. Takes 2 minutes." />
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --ink: #0d0d0d;
+    --paper: #f5f0e8;
+    --accent: #e8420a;
+    --accent2: #1a6bfa;
+    --muted: #7a7469;
+    --card-bg: #ffffff;
+    --border: #e0d9ce;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--paper); color: var(--ink); min-height: 100vh; overflow-x: hidden; }
+  body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E"); pointer-events: none; z-index: 999; opacity: 0.6; }
+  .page-wrap { max-width: 720px; margin: 0 auto; padding: 48px 24px 80px; }
+  .header { margin-bottom: 48px; opacity: 0; animation: fadeUp 0.6s ease forwards; }
+  .logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.1rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); margin-bottom: 28px; display: flex; align-items: center; gap: 8px; }
+  .logo-dot { width: 8px; height: 8px; background: var(--accent); border-radius: 50%; display: inline-block; }
+  .hero-label { font-family: 'Syne', sans-serif; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
+  h1 { font-family: 'Syne', sans-serif; font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; line-height: 1.1; margin-bottom: 14px; }
+  h1 span { color: var(--accent); }
+  .hero-sub { font-size: 1rem; color: var(--muted); font-weight: 300; line-height: 1.6; max-width: 520px; }
+  .progress-bar-wrap { margin-bottom: 40px; opacity: 0; animation: fadeUp 0.6s ease 0.1s forwards; }
+  .progress-steps { display: flex; gap: 8px; margin-bottom: 8px; }
+  .step-dot { width: 28px; height: 4px; border-radius: 2px; background: var(--border); transition: background 0.4s ease; }
+  .step-dot.active { background: var(--accent); }
+  .step-dot.done { background: var(--ink); }
+  .progress-label { font-size: 0.78rem; color: var(--muted); }
+  .section { opacity: 0; animation: fadeUp 0.6s ease forwards; }
+  .section:nth-child(1) { animation-delay: 0.15s; }
+  .section:nth-child(2) { animation-delay: 0.25s; }
+  .section:nth-child(3) { animation-delay: 0.35s; }
+  .section-title { font-family: 'Syne', sans-serif; font-size: 1.2rem; font-weight: 700; margin-bottom: 5px; }
+  .section-sub { font-size: 0.86rem; color: var(--muted); margin-bottom: 22px; line-height: 1.5; }
+  .cards-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 40px; }
+  @media (max-width: 520px) { .cards-grid { grid-template-columns: 1fr; } }
+  .use-card { background: var(--card-bg); border: 1.5px solid var(--border); border-radius: 14px; padding: 18px; cursor: default; transition: border-color 0.2s; position: relative; overflow: hidden; }
+  .use-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform 0.3s ease; }
+  .use-card.rated { border-color: var(--accent); background: #fffaf7; }
+  .use-card.rated::before { transform: scaleX(1); }
+  .card-icon { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+  .card-title { font-family: 'Syne', sans-serif; font-size: 0.88rem; font-weight: 700; margin-bottom: 5px; line-height: 1.3; }
+  .card-desc { font-size: 0.78rem; color: var(--muted); line-height: 1.5; margin-bottom: 12px; }
+  .star-row { display: flex; gap: 4px; }
+  .star { font-size: 1.2rem; cursor: pointer; color: #d4cec5; transition: transform 0.1s; user-select: none; }
+  .star:hover { transform: scale(1.2); }
+  .star.lit { color: #f5a623; }
+  .rating-label { font-size: 0.68rem; color: var(--muted); margin-top: 4px; height: 13px; }
+  .field-group { margin-bottom: 24px; }
+  .field-label { font-family: 'Syne', sans-serif; font-size: 0.84rem; font-weight: 600; display: block; margin-bottom: 8px; }
+  textarea, input[type="text"], input[type="email"] { width: 100%; background: var(--card-bg); border: 1.5px solid var(--border); border-radius: 10px; padding: 12px 14px; font-family: 'DM Sans', sans-serif; font-size: 0.88rem; color: var(--ink); resize: vertical; outline: none; transition: border-color 0.2s; line-height: 1.5; }
+  textarea:focus, input:focus { border-color: var(--accent2); box-shadow: 0 0 0 3px rgba(26,107,250,0.08); }
+  textarea { min-height: 88px; }
+  .chip-group { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip { padding: 6px 13px; border-radius: 100px; border: 1.5px solid var(--border); font-size: 0.78rem; font-family: 'DM Sans', sans-serif; cursor: pointer; background: var(--card-bg); color: var(--ink); user-select: none; transition: all 0.15s; }
+  .chip:hover { border-color: #b0a99e; }
+  .chip.selected { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+  .submit-btn { display: inline-flex; align-items: center; gap: 10px; background: var(--accent); color: white; border: none; border-radius: 10px; padding: 15px 30px; font-family: 'Syne', sans-serif; font-size: 0.92rem; font-weight: 700; cursor: pointer; transition: background 0.2s, transform 0.1s; margin-top: 6px; }
+  .submit-btn:hover { background: #c93508; transform: translateY(-1px); }
+  .submit-note { font-size: 0.75rem; color: var(--muted); margin-top: 10px; }
+  .error-msg { font-size: 0.75rem; color: var(--accent); margin-top: 6px; display: none; }
+  .form-content { transition: opacity 0.3s; }
+  .thankyou { display: none; text-align: center; padding: 56px 20px; }
+  .thankyou.visible { display: block; animation: fadeUp 0.5s ease forwards; }
+  .thankyou-icon { font-size: 2.8rem; margin-bottom: 16px; }
+  .thankyou h2 { font-family: 'Syne', sans-serif; font-size: 1.8rem; font-weight: 800; margin-bottom: 10px; }
+  .thankyou p { color: var(--muted); font-size: 0.92rem; line-height: 1.6; max-width: 380px; margin: 0 auto 28px; }
+  .share-section { background: var(--card-bg); border: 1.5px solid var(--border); border-radius: 14px; padding: 20px 24px; max-width: 420px; margin: 0 auto; text-align: left; }
+  .share-label { font-family: 'Syne', sans-serif; font-size: 0.78rem; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; }
+  .share-url { font-size: 0.82rem; color: var(--ink); background: var(--paper); border: 1.5px solid var(--border); border-radius: 8px; padding: 10px 12px; word-break: break-all; margin-bottom: 12px; line-height: 1.5; }
+  .share-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+  .share-btn { display: inline-flex; align-items: center; gap: 6px; padding: 9px 16px; border-radius: 8px; font-size: 0.8rem; font-family: 'Syne', sans-serif; font-weight: 600; cursor: pointer; transition: all 0.15s; border: 1.5px solid var(--ink); background: transparent; color: var(--ink); }
+  .share-btn:hover { background: var(--ink); color: var(--paper); }
+  .share-btn.primary { background: var(--ink); color: var(--paper); }
+  .share-btn.primary:hover { background: #333; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+  <div class="header">
+    <div class="logo"><span class="logo-dot"></span> Airrive</div>
+    <div class="hero-label">Early Access Research</div>
+    <h1>Help us build what <span>actually matters</span></h1>
+    <p class="hero-sub">We're in early concept stage. Your honest input shapes what we build first. Takes 2 minutes.</p>
+  </div>
+
+  <div class="progress-bar-wrap" id="progressWrap">
+    <div class="progress-steps">
+      <div class="step-dot active" id="dot1"></div>
+      <div class="step-dot" id="dot2"></div>
+      <div class="step-dot" id="dot3"></div>
+    </div>
+    <div class="progress-label" id="progressLabel">Step 1 of 3 — Rate use cases</div>
+  </div>
+
+  <div class="form-content" id="formContent">
+
+    <div class="section">
+      <div class="section-title">How useful would each of these be?</div>
+      <div class="section-sub">Rate each one. 1 star = not useful, 5 stars = must have.</div>
+      <div class="cards-grid">
+        <div class="use-card" data-id="smart-cab"><span class="card-icon">🚖</span><div class="card-title">Smart Cab Booking</div><div class="card-desc">Book a cab timed to your actual arrival. Compares Ola, Uber & Lyft in real-time. One link, one tap, done.</div><div class="star-row"></div><div class="rating-label"></div></div>
+        <div class="use-card" data-id="flight-summary"><span class="card-icon">📊</span><div class="card-title">Flight Pattern Summary</div><div class="card-desc">Weekly history with delay pattern analysis. Know which routes and airlines to avoid before you book.</div><div class="star-row"></div><div class="rating-label"></div></div>
+        <div class="use-card" data-id="family-tracker"><span class="card-icon">👨‍👩‍👧</span><div class="card-title">Family Tracker</div><div class="card-desc">Passively monitor a family member's flight. Get notified when they board, land, and clear connections.</div><div class="star-row"></div><div class="rating-label"></div></div>
+        <div class="use-card" data-id="dynamic-rebooking"><span class="card-icon">🔄</span><div class="card-title">Dynamic Rebooking</div><div class="card-desc">If a delay means you'll miss your connection, Airrive surfaces rebooking options before the airline does.</div><div class="star-row"></div><div class="rating-label"></div></div>
+        <div class="use-card" data-id="group-arrival"><span class="card-icon">🧳</span><div class="card-title">Group Arrival Coordination</div><div class="card-desc">Multiple people flying in from different cities? Consolidates all arrivals and suggests a shared transfer.</div><div class="star-row"></div><div class="rating-label"></div></div>
+        <div class="use-card" data-id="expense-log"><span class="card-icon">🧾</span><div class="card-title">Business Expense Auto-log</div><div class="card-desc">Automatically captures cab receipts, flight details, and timestamps into a formatted expense report draft.</div><div class="star-row"></div><div class="rating-label"></div></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Tell us about your travel stress</div>
+      <div class="section-sub">We want to understand the real moments of stress. Not just the features.</div>
+      <div class="field-group">
+        <label class="field-label">What's the most stressful moment when you or a loved one is flying?</label>
+        <textarea id="stressStory" placeholder="e.g. My parents always panic during the 2-hour window when I've taken off but haven't landed yet..."></textarea>
+      </div>
+      <div class="field-group">
+        <label class="field-label">Any use case you'd love to see that we haven't mentioned?</label>
+        <textarea id="openIdea" placeholder="e.g. I wish I could track my elderly parent's connecting flight when they travel alone..."></textarea>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">One last thing</div>
+      <div class="section-sub">Helps us understand who we're building for.</div>
+      <div class="field-group">
+        <label class="field-label">How often do you or your family fly?</label>
+        <div class="chip-group" id="freqChips">
+          <div class="chip" data-val="rarely">Rarely (1–2x/year)</div>
+          <div class="chip" data-val="sometimes">Sometimes (3–6x/year)</div>
+          <div class="chip" data-val="often">Often (monthly)</div>
+          <div class="chip" data-val="frequent">Very frequent (weekly)</div>
+        </div>
+      </div>
+      <div class="field-group">
+        <label class="field-label">Cell number (optional)</label>
+        <input type="text" id="phoneInput" placeholder="+91 98765 43210" />
+      </div>
+      <div class="field-group">
+        <label class="field-label">Email address (optional)</label>
+        <input type="email" id="emailInput" placeholder="you@email.com" />
+      </div>
+      <button class="submit-btn" onclick="handleSubmit()">
+        Submit feedback
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="submit-note">We'll reach out personally when we launch. No spam, ever.</div>
+      <div class="error-msg" id="errorMsg">Please rate at least 2 use cases before submitting.</div>
+    </div>
+
+  </div>
+
+  <!-- Thank you -->
+  <div class="thankyou" id="thankYou">
+    <div class="thankyou-icon">🛫</div>
+    <h2>You're on board.</h2>
+    <p>Your feedback will directly shape what Airrive builds first. We'll personally reach out when we're ready for beta testers.</p>
+    <div class="share-section">
+      <div class="share-label">Know someone who travels? Share this with them.</div>
+      <div class="share-url" id="shareUrl"></div>
+      <div class="share-btns">
+        <button class="share-btn primary" id="copyBtn" onclick="copyLink()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+          Copy link
+        </button>
+        <button class="share-btn" id="shareBtn" onclick="shareNative()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+          Share via...
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script>
+  const SHEET_URL = 'https://script.google.com/macros/s/AKfycbwrSFzhbaUxlbhHBBmJHDpQYvpaLlfObssH56rlg73fYKM4ZEsilaaU9feY-CflPgWl/exec';
+  const SURVEY_URL = window.location.href.split('?')[0];
+  const ratingLabels = ['','Not for me','Probably not','Might use it','Would love this','Must have!'];
+  const ratings = {};
+
+  document.getElementById('shareUrl').textContent = SURVEY_URL;
+
+  document.querySelectorAll('.use-card').forEach(card => {
+    const id = card.dataset.id;
+    const row = card.querySelector('.star-row');
+    const lbl = card.querySelector('.rating-label');
+    for (let i = 1; i <= 5; i++) {
+      const s = document.createElement('span');
+      s.className = 'star'; s.textContent = '★';
+      s.addEventListener('mouseenter', () => hi(row, i));
+      s.addEventListener('mouseleave', () => hi(row, ratings[id] || 0));
+      s.addEventListener('click', () => { ratings[id] = i; hi(row, i); lbl.textContent = ratingLabels[i]; card.classList.add('rated'); updateProgress(); });
+      row.appendChild(s);
+    }
+  });
+
+  function hi(row, val) { row.querySelectorAll('.star').forEach((s, i) => s.classList.toggle('lit', i < val)); }
+
+  document.querySelectorAll('.chip-group').forEach(g => g.querySelectorAll('.chip').forEach(c => c.addEventListener('click', () => c.classList.toggle('selected'))));
+
+  function updateProgress() {
+    const n = Object.keys(ratings).length;
+    const textFilled = document.getElementById('stressStory').value.trim().length > 0 || document.getElementById('openIdea').value.trim().length > 0;
+    if (n >= 4) { document.getElementById('dot1').className='step-dot done'; document.getElementById('dot2').className='step-dot active'; document.getElementById('progressLabel').textContent='Step 2 of 3 — Share your story'; }
+    if (n >= 4 && textFilled) { document.getElementById('dot2').className='step-dot done'; document.getElementById('dot3').className='step-dot active'; document.getElementById('progressLabel').textContent='Step 3 of 3 — Almost done!'; }
+  }
+
+  document.getElementById('stressStory').addEventListener('input', updateProgress);
+  document.getElementById('openIdea').addEventListener('input', updateProgress);
+
+  function handleSubmit() {
+    if (Object.keys(ratings).length < 2) { document.getElementById('errorMsg').style.display='block'; return; }
+    document.getElementById('errorMsg').style.display='none';
+    const data = {
+      type: 'survey', ratings,
+      stressStory: document.getElementById('stressStory').value,
+      openIdea: document.getElementById('openIdea').value,
+      frequency: [...document.querySelectorAll('#freqChips .chip.selected')].map(c => c.dataset.val),
+      phone: document.getElementById('phoneInput').value,
+      email: document.getElementById('emailInput').value,
+      timestamp: new Date().toISOString()
+    };
+    fetch(SHEET_URL, { method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'}, body:JSON.stringify(data) }).catch(console.error);
+    document.getElementById('formContent').style.opacity='0';
+    document.getElementById('progressWrap').style.display='none';
+    setTimeout(() => { document.getElementById('formContent').style.display='none'; document.getElementById('thankYou').classList.add('visible'); }, 300);
+  }
+
+  function copyLink() {
+    const btn = document.getElementById('copyBtn');
+    const orig = btn.innerHTML;
+    const done = () => { btn.textContent='✓ Copied!'; setTimeout(() => btn.innerHTML=orig, 2500); };
+    if (navigator.clipboard) { navigator.clipboard.writeText(SURVEY_URL).then(done).catch(() => fallback(done)); }
+    else fallback(done);
+  }
+
+  function fallback(cb) {
+    const ta = document.createElement('textarea');
+    ta.value=SURVEY_URL; ta.style.position='fixed'; ta.style.opacity='0';
+    document.body.appendChild(ta); ta.focus(); ta.select();
+    try { document.execCommand('copy'); cb(); } catch(e) {}
+    document.body.removeChild(ta);
+  }
+
+  function shareNative() {
+    if (navigator.share) {
+      navigator.share({ title:'Help build Airrive', text:'Rate Airrive use cases and share your travel pain points. Takes 2 mins.', url:SURVEY_URL }).catch(()=>{});
+    } else { copyLink(); }
+  }
+</script>
+</body>
+</html>
